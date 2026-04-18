@@ -21,15 +21,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Avatar } from "@/components/ui/avatar"
+import { Plus, Pencil, Trash2, ArrowLeft, ArrowRight, Users } from "lucide-react"
 import { Member, OnboardingData } from "../../onboard-wizzard"
 
 type MembersStepProps = {
@@ -40,9 +34,9 @@ type MembersStepProps = {
 }
 
 const roleColors = {
-  admin: "bg-primary/20 text-primary border-primary/30",
-  member: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  guest: "bg-muted text-muted-foreground border-border",
+  admin: "icon-bg-lavender",
+  member: "icon-bg-teal",
+  guest: "icon-bg-sunny",
 }
 
 export function MembersStep({ data, updateData, onNext, onBack }: MembersStepProps) {
@@ -84,85 +78,93 @@ export function MembersStep({ data, updateData, onNext, onBack }: MembersStepPro
 
   return (
     <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">Hub Members</h1>
-        <p className="text-muted-foreground">
-          Add family members or guests who can access your smart home hub.
-        </p>
+      {/* Header with icon */}
+      <div className="text-center space-y-4">
+        <div className="flex justify-center">
+          <div className="w-16 h-16 rounded-2xl icon-bg-lavender flex items-center justify-center">
+            <Users className="w-8 h-8" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Add Your Family</h1>
+          <p className="text-muted-foreground">
+            Invite family members or guests who can access your smart home hub.
+          </p>
+        </div>
       </div>
 
-      <Card className="bg-card border-border">
+      <Card className="bg-card border-border rounded-2xl shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle className="text-lg">Members</CardTitle>
-            <CardDescription>{data.members.length} member(s) added</CardDescription>
+            <CardTitle className="text-lg font-bold">Family Members</CardTitle>
+            <CardDescription>{data.members.length} member{data.members.length !== 1 ? "s" : ""} added</CardDescription>
           </div>
           <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
             <DialogTrigger asChild>
-              <Button size="sm">
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                </svg>
+              <Button size="sm" className="rounded-xl">
+                <Plus className="w-4 h-4 mr-2" />
                 Add Member
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-card border-border">
+            <DialogContent className="bg-card border-border rounded-2xl">
               <DialogHeader>
-                <DialogTitle>Add New Member</DialogTitle>
+                <DialogTitle className="text-xl font-bold">Add Family Member</DialogTitle>
                 <DialogDescription>
-                  Add a new member to your smart home hub.
+                  Add a new member to your family hub.
                 </DialogDescription>
               </DialogHeader>
-              <div className="space-y-4 py-4">
+              <div className="space-y-5 py-4">
+                {/* Avatar preview */}
+                <div className="flex justify-center">
+                  <Avatar 
+                    name={formData.name || "New"} 
+                    identifier={formData.email || "new-member"}
+                    size="xl"
+                  />
+                </div>
                 <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name" className="font-medium">Name</Label>
                   <Input
                     id="name"
                     placeholder="Enter name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-input border-border"
+                    className="bg-input border-border rounded-xl h-11"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email" className="font-medium">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="Enter email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="bg-input border-border"
+                    className="bg-input border-border rounded-xl h-11"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="role">Role</Label>
+                  <Label htmlFor="role" className="font-medium">Role</Label>
                   <Select
                     value={formData.role}
                     onValueChange={(value: Member["role"]) => setFormData({ ...formData, role: value })}
                   >
-                    <SelectTrigger className="bg-input border-border">
+                    <SelectTrigger className="bg-input border-border rounded-xl h-11">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border">
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="member">Member</SelectItem>
-                      <SelectItem value="guest">Guest</SelectItem>
+                    <SelectContent className="bg-popover border-border rounded-xl">
+                      <SelectItem value="admin" className="rounded-lg">Admin</SelectItem>
+                      <SelectItem value="member" className="rounded-lg">Member</SelectItem>
+                      <SelectItem value="guest" className="rounded-lg">Guest</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddOpen(false)} className="bg-transparent">
+              <DialogFooter className="gap-2">
+                <Button variant="outline" onClick={() => setIsAddOpen(false)} className="bg-transparent rounded-xl">
                   Cancel
                 </Button>
-                <Button onClick={handleAdd} disabled={!formData.name || !formData.email}>
+                <Button onClick={handleAdd} disabled={!formData.name || !formData.email} className="rounded-xl">
                   Add Member
                 </Button>
               </DialogFooter>
@@ -170,148 +172,125 @@ export function MembersStep({ data, updateData, onNext, onBack }: MembersStepPro
           </Dialog>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border border-border overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-secondary/50 hover:bg-secondary/50">
-                  <TableHead className="text-muted-foreground">Name</TableHead>
-                  <TableHead className="text-muted-foreground hidden md:table-cell">Email</TableHead>
-                  <TableHead className="text-muted-foreground">Role</TableHead>
-                  <TableHead className="text-muted-foreground text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.members.map((member) => (
-                  <TableRow key={member.id} className="hover:bg-secondary/30">
-                    <TableCell className="font-medium text-foreground">{member.name}</TableCell>
-                    <TableCell className="text-muted-foreground hidden md:table-cell">
-                      {member.email}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={roleColors[member.role]}>
+          <div className="space-y-3">
+            {data.members.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                No members added yet. Add your first family member above.
+              </div>
+            ) : (
+              data.members.map((member) => (
+                <div key={member.id} className="flex items-center gap-4 p-4 rounded-xl bg-muted/30 border border-border card-interactive">
+                  <Avatar 
+                    name={member.name} 
+                    identifier={member.id}
+                    size="lg"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="font-semibold text-foreground truncate">{member.name}</span>
+                      <Badge variant="outline" className={`text-xs font-semibold ${roleColors[member.role]}`}>
                         {member.role}
                       </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                          onClick={() => openEdit(member)}
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                          </svg>
-                          <span className="sr-only">Edit</span>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                          onClick={() => handleDelete(member.id)}
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
-                          <span className="sr-only">Delete</span>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+                    <span className="text-sm text-muted-foreground truncate block">{member.email}</span>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground"
+                      onClick={() => openEdit(member)}
+                    >
+                      <Pencil className="w-4 h-4" />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 rounded-lg text-muted-foreground hover:text-destructive"
+                      onClick={() => handleDelete(member.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span className="sr-only">Delete</span>
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
 
       {/* Edit Dialog */}
       <Dialog open={!!editingMember} onOpenChange={(open) => !open && resetForm()}>
-        <DialogContent className="bg-card border-border">
+        <DialogContent className="bg-card border-border rounded-2xl">
           <DialogHeader>
-            <DialogTitle>Edit Member</DialogTitle>
+            <DialogTitle className="text-xl font-bold">Edit Member</DialogTitle>
             <DialogDescription>Update member information.</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="space-y-5 py-4">
+            {/* Avatar preview */}
+            <div className="flex justify-center">
+              <Avatar 
+                name={formData.name || "?"} 
+                identifier={editingMember?.id || "edit"}
+                size="xl"
+              />
+            </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-name">Name</Label>
+              <Label htmlFor="edit-name" className="font-medium">Name</Label>
               <Input
                 id="edit-name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="bg-input border-border"
+                className="bg-input border-border rounded-xl h-11"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-email">Email</Label>
+              <Label htmlFor="edit-email" className="font-medium">Email</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="bg-input border-border"
+                className="bg-input border-border rounded-xl h-11"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-role">Role</Label>
+              <Label htmlFor="edit-role" className="font-medium">Role</Label>
               <Select
                 value={formData.role}
                 onValueChange={(value: Member["role"]) => setFormData({ ...formData, role: value })}
               >
-                <SelectTrigger className="bg-input border-border">
+                <SelectTrigger className="bg-input border-border rounded-xl h-11">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-border">
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="member">Member</SelectItem>
-                  <SelectItem value="guest">Guest</SelectItem>
+                <SelectContent className="bg-popover border-border rounded-xl">
+                  <SelectItem value="admin" className="rounded-lg">Admin</SelectItem>
+                  <SelectItem value="member" className="rounded-lg">Member</SelectItem>
+                  <SelectItem value="guest" className="rounded-lg">Guest</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={resetForm} className="bg-transparent">
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={resetForm} className="bg-transparent rounded-xl">
               Cancel
             </Button>
-            <Button onClick={handleEdit}>Save Changes</Button>
+            <Button onClick={handleEdit} className="rounded-xl">Save Changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Navigation */}
       <div className="flex justify-between gap-4">
-        <Button variant="outline" onClick={onBack} className="bg-transparent">
-          <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-          </svg>
+        <Button variant="outline" onClick={onBack} className="bg-transparent rounded-xl h-12 px-6">
+          <ArrowLeft className="w-5 h-5 mr-2" />
           Back
         </Button>
-        <Button onClick={onNext}>
+        <Button onClick={onNext} className="rounded-xl h-12 px-6">
           Continue
-          <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>
