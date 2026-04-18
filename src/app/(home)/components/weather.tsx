@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Cloud, Sun, CloudRain, CloudSnow, CloudLightning, Wind, Droplets } from "lucide-react"
+import { Cloud, Sun, CloudRain, CloudSnow, CloudLightning, Wind, Droplets, MapPin } from "lucide-react"
 
 type WeatherType = "sunny" | "cloudy" | "rainy" | "snowy" | "stormy" | "windy"
 
@@ -23,46 +23,92 @@ const weather: WeatherData = {
   location: "San Francisco",
 }
 
-const weatherIcons: Record<WeatherType, React.ReactNode> = {
-  sunny: <Sun className="w-8 h-8" />,
-  cloudy: <Cloud className="w-8 h-8" />,
-  rainy: <CloudRain className="w-8 h-8" />,
-  snowy: <CloudSnow className="w-8 h-8" />,
-  stormy: <CloudLightning className="w-8 h-8" />,
-  windy: <Wind className="w-8 h-8" />,
+const weatherConfig: Record<WeatherType, { icon: React.ReactNode; bgClass: string; label: string }> = {
+  sunny: { 
+    icon: <Sun className="w-7 h-7" />, 
+    bgClass: "icon-bg-sunny",
+    label: "Sunny"
+  },
+  cloudy: { 
+    icon: <Cloud className="w-7 h-7" />, 
+    bgClass: "icon-bg-sky",
+    label: "Cloudy"
+  },
+  rainy: { 
+    icon: <CloudRain className="w-7 h-7" />, 
+    bgClass: "icon-bg-teal",
+    label: "Rainy"
+  },
+  snowy: { 
+    icon: <CloudSnow className="w-7 h-7" />, 
+    bgClass: "icon-bg-lavender",
+    label: "Snowy"
+  },
+  stormy: { 
+    icon: <CloudLightning className="w-7 h-7" />, 
+    bgClass: "icon-bg-lavender",
+    label: "Stormy"
+  },
+  windy: { 
+    icon: <Wind className="w-7 h-7" />, 
+    bgClass: "icon-bg-mint",
+    label: "Windy"
+  },
 }
 
 export function WeatherWidget() {
+  const config = weatherConfig[weather.type]
+
   return (
-    <div className="flex items-center gap-6 bg-card/50 border border-border rounded-2xl px-6 py-3">
-      <div className="flex items-center gap-3">
-        <div className="text-foreground">{weatherIcons[weather.type]}</div>
+    <div className="flex items-center gap-5 bg-card border border-border rounded-2xl px-5 py-4 shadow-sm card-interactive">
+      {/* Weather icon with colorful background */}
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${config.bgClass}`}>
+        {config.icon}
+      </div>
+
+      {/* Temperature and condition */}
+      <div className="flex flex-col">
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-light text-foreground">{weather.temp}</span>
-          <span className="text-lg text-muted-foreground">°F</span>
+          <span className="text-4xl font-bold text-foreground">{weather.temp}</span>
+          <span className="text-lg text-muted-foreground font-medium">°F</span>
+        </div>
+        <span className="text-sm text-muted-foreground font-medium">{config.label}</span>
+      </div>
+
+      <div className="h-12 w-px bg-border/60" />
+
+      {/* High/Low */}
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground w-8">High</span>
+          <span className="text-sm font-semibold text-foreground">{weather.high}°</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground w-8">Low</span>
+          <span className="text-sm font-semibold text-foreground">{weather.low}°</span>
         </div>
       </div>
 
-      <div className="h-8 w-px bg-border" />
+      <div className="h-12 w-px bg-border/60" />
 
-      <div className="flex items-center gap-4 text-sm">
-        <div className="text-center">
-          <p className="text-muted-foreground text-xs">High</p>
-          <p className="text-foreground font-medium">{weather.high}°</p>
+      {/* Humidity */}
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 rounded-lg icon-bg-teal flex items-center justify-center">
+          <Droplets className="w-4 h-4" />
         </div>
-        <div className="text-center">
-          <p className="text-muted-foreground text-xs">Low</p>
-          <p className="text-foreground font-medium">{weather.low}°</p>
-        </div>
-        <div className="flex items-center gap-1 text-muted-foreground">
-          <Droplets className="w-3 h-3" />
-          <span className="text-foreground font-medium">{weather.humidity}%</span>
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold text-foreground">{weather.humidity}%</span>
+          <span className="text-xs text-muted-foreground">Humidity</span>
         </div>
       </div>
 
-      <div className="h-8 w-px bg-border" />
+      <div className="h-12 w-px bg-border/60" />
 
-      <p className="text-sm text-muted-foreground">{weather.location}</p>
+      {/* Location */}
+      <div className="flex items-center gap-2">
+        <MapPin className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground font-medium">{weather.location}</span>
+      </div>
     </div>
   )
 }
