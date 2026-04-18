@@ -72,142 +72,156 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  /* Warm cream background for friendly feel */
-  --background: oklch(0.9800 0.0080 85);
-  --foreground: oklch(0.2500 0.0200 260);
-  /* Soft white cards with subtle warmth */
-  --card: oklch(0.9950 0.0040 85);
-  --card-foreground: oklch(0.2500 0.0200 260);
-  --popover: oklch(0.9950 0.0040 85);
-  --popover-foreground: oklch(0.2500 0.0200 260);
-  /* Vibrant coral/orange primary - friendly and energetic */
-  --primary: oklch(0.6800 0.1800 35);
+  --radius: 1rem;
+  /* Soft sky blue background - kid friendly */
+  --background: oklch(0.9600 0.0300 220);
+  --foreground: oklch(0.2800 0.0400 260);
+  /* Bright white cards with playful feel */
+  --card: oklch(0.9900 0.0100 85);
+  --card-foreground: oklch(0.2800 0.0400 260);
+  --popover: oklch(0.9900 0.0100 85);
+  --popover-foreground: oklch(0.2800 0.0400 260);
+  /* Vibrant bubblegum pink primary */
+  --primary: oklch(0.7000 0.2000 350);
   --primary-foreground: oklch(1 0 0);
-  /* Soft lavender secondary */
-  --secondary: oklch(0.9200 0.0400 290);
-  --secondary-foreground: oklch(0.3500 0.1000 290);
-  /* Warm muted tones */
-  --muted: oklch(0.9500 0.0100 85);
-  --muted-foreground: oklch(0.5000 0.0300 260);
-  /* Soft teal accent */
-  --accent: oklch(0.8800 0.0800 180);
-  --accent-foreground: oklch(0.3000 0.0800 180);
-  --destructive: oklch(0.6500 0.2000 25);
-  --border: oklch(0.9100 0.0200 85);
-  --input: oklch(0.9600 0.0100 85);
-  --ring: oklch(0.6800 0.1800 35);
-  /* Colorful chart palette */
-  --chart-1: oklch(0.7500 0.1600 35);
-  --chart-2: oklch(0.7000 0.1400 180);
-  --chart-3: oklch(0.7500 0.1200 290);
-  --chart-4: oklch(0.8000 0.1500 85);
-  --chart-5: oklch(0.7000 0.1600 145);
-  /* Colorful sidebar */
-  --sidebar: oklch(0.9700 0.0100 85);
-  --sidebar-foreground: oklch(0.2500 0.0200 260);
-  --sidebar-primary: oklch(0.6800 0.1800 35);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.9200 0.0400 290);
-  --sidebar-accent-foreground: oklch(0.3500 0.1000 290);
-  --sidebar-border: oklch(0.9100 0.0200 85);
-  --sidebar-ring: oklch(0.6800 0.1800 35);
+  /* Bright sunny yellow secondary */
+  --secondary: oklch(0.9200 0.1200 95);
+  --secondary-foreground: oklch(0.4000 0.1000 85);
+  /* Soft cloud muted tones */
+  --muted: oklch(0.9400 0.0200 220);
+  --muted-foreground: oklch(0.5000 0.0400 260);
+  /* Fun teal/turquoise accent */
+  --accent: oklch(0.8200 0.1400 185);
+  --accent-foreground: oklch(0.2500 0.0800 185);
+  --destructive: oklch(0.6500 0.2200 25);
+  --border: oklch(0.9000 0.0400 220);
+  --input: oklch(0.9700 0.0200 220);
+  --ring: oklch(0.7000 0.2000 350);
+  /* Rainbow chart palette */
+  --chart-1: oklch(0.7500 0.2000 350);
+  --chart-2: oklch(0.7500 0.1800 180);
+  --chart-3: oklch(0.8000 0.1600 95);
+  --chart-4: oklch(0.7200 0.1600 290);
+  --chart-5: oklch(0.7500 0.1800 145);
+  /* Playful colorful sidebar */
+  --sidebar: oklch(0.7200 0.1800 280);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.9200 0.1200 95);
+  --sidebar-primary-foreground: oklch(0.3000 0.0800 85);
+  --sidebar-accent: oklch(0.8000 0.1400 350);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.6500 0.1600 280);
+  --sidebar-ring: oklch(0.9200 0.1200 95);
   --destructive-foreground: oklch(1 0 0);
-  /* Avatar color palette */
-  --avatar-coral: oklch(0.7200 0.1600 30);
-  --avatar-teal: oklch(0.7000 0.1200 180);
-  --avatar-lavender: oklch(0.7200 0.1200 290);
-  --avatar-mint: oklch(0.7500 0.1200 155);
-  --avatar-sunny: oklch(0.8200 0.1500 85);
-  --avatar-sky: oklch(0.7000 0.1200 230);
-  --font-sans: "Nunito", "Geist", sans-serif;
+  /* Rainbow avatar color palette */
+  --avatar-coral: oklch(0.7500 0.1800 25);
+  --avatar-teal: oklch(0.7500 0.1400 185);
+  --avatar-lavender: oklch(0.7500 0.1400 290);
+  --avatar-mint: oklch(0.8000 0.1400 155);
+  --avatar-sunny: oklch(0.8800 0.1600 95);
+  --avatar-sky: oklch(0.7500 0.1400 230);
+  /* Extra playful colors */
+  --fun-pink: oklch(0.7500 0.2000 350);
+  --fun-purple: oklch(0.7000 0.1800 290);
+  --fun-blue: oklch(0.7000 0.1600 240);
+  --fun-green: oklch(0.7500 0.1800 145);
+  --fun-orange: oklch(0.7800 0.1800 55);
+  --fun-yellow: oklch(0.9000 0.1600 95);
+  --font-sans: "Nunito", "Comic Neue", "Geist", sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Geist Mono, monospace;
-  --shadow-color: hsl(30 20% 20%);
-  --shadow-opacity: 0.10;
-  --shadow-blur: 4px;
+  --shadow-color: hsl(260 30% 50%);
+  --shadow-opacity: 0.15;
+  --shadow-blur: 8px;
   --shadow-spread: 0px;
   --shadow-offset-x: 0px;
-  --shadow-offset-y: 2px;
+  --shadow-offset-y: 4px;
   --letter-spacing: 0em;
   --spacing: 0.25rem;
-  --shadow-2xs: 0px 1px 2px 0px hsl(30 20% 20% / 0.06);
-  --shadow-xs: 0px 1px 3px 0px hsl(30 20% 20% / 0.08);
-  --shadow-sm: 0px 2px 4px 0px hsl(30 20% 20% / 0.08), 0px 1px 2px -1px hsl(30 20% 20% / 0.08);
-  --shadow: 0px 2px 6px 0px hsl(30 20% 20% / 0.10), 0px 1px 3px -1px hsl(30 20% 20% / 0.10);
-  --shadow-md: 0px 4px 8px 0px hsl(30 20% 20% / 0.10), 0px 2px 4px -1px hsl(30 20% 20% / 0.10);
-  --shadow-lg: 0px 6px 12px 0px hsl(30 20% 20% / 0.12), 0px 4px 6px -1px hsl(30 20% 20% / 0.10);
-  --shadow-xl: 0px 10px 20px 0px hsl(30 20% 20% / 0.12), 0px 8px 10px -1px hsl(30 20% 20% / 0.10);
-  --shadow-2xl: 0px 16px 32px 0px hsl(30 20% 20% / 0.20);
+  --shadow-2xs: 0px 2px 4px 0px hsl(260 30% 50% / 0.08);
+  --shadow-xs: 0px 2px 6px 0px hsl(260 30% 50% / 0.10);
+  --shadow-sm: 0px 3px 8px 0px hsl(260 30% 50% / 0.12), 0px 1px 3px -1px hsl(260 30% 50% / 0.10);
+  --shadow: 0px 4px 12px 0px hsl(260 30% 50% / 0.15), 0px 2px 4px -1px hsl(260 30% 50% / 0.12);
+  --shadow-md: 0px 6px 16px 0px hsl(260 30% 50% / 0.15), 0px 3px 6px -1px hsl(260 30% 50% / 0.12);
+  --shadow-lg: 0px 10px 24px 0px hsl(260 30% 50% / 0.18), 0px 5px 10px -1px hsl(260 30% 50% / 0.14);
+  --shadow-xl: 0px 16px 32px 0px hsl(260 30% 50% / 0.20), 0px 8px 16px -1px hsl(260 30% 50% / 0.15);
+  --shadow-2xl: 0px 24px 48px 0px hsl(260 30% 50% / 0.25);
   --tracking-normal: 0em;
 }
 
 .dark {
-  /* Deep navy with warmth for night mode */
-  --background: oklch(0.1800 0.0200 260);
-  --foreground: oklch(0.9500 0.0100 85);
-  --card: oklch(0.2200 0.0200 260);
-  --card-foreground: oklch(0.9500 0.0100 85);
-  --popover: oklch(0.2400 0.0200 260);
-  --popover-foreground: oklch(0.9500 0.0100 85);
-  /* Bright coral primary in dark mode */
-  --primary: oklch(0.7200 0.1800 35);
-  --primary-foreground: oklch(0.1500 0.0200 260);
-  /* Muted lavender secondary */
-  --secondary: oklch(0.3200 0.0500 290);
-  --secondary-foreground: oklch(0.9000 0.0400 290);
-  --muted: oklch(0.2800 0.0200 260);
-  --muted-foreground: oklch(0.6500 0.0200 260);
-  /* Teal accent */
-  --accent: oklch(0.3500 0.0600 180);
-  --accent-foreground: oklch(0.8500 0.0600 180);
-  --destructive: oklch(0.6500 0.2000 25);
-  --border: oklch(0.3000 0.0200 260);
-  --input: oklch(0.2800 0.0200 260);
-  --ring: oklch(0.7200 0.1800 35);
-  /* Colorful chart palette */
-  --chart-1: oklch(0.7500 0.1600 35);
-  --chart-2: oklch(0.7000 0.1400 180);
-  --chart-3: oklch(0.7500 0.1200 290);
-  --chart-4: oklch(0.8000 0.1500 85);
-  --chart-5: oklch(0.7000 0.1600 145);
-  /* Sidebar */
-  --sidebar: oklch(0.2000 0.0200 260);
-  --sidebar-foreground: oklch(0.9500 0.0100 85);
-  --sidebar-primary: oklch(0.7200 0.1800 35);
-  --sidebar-primary-foreground: oklch(0.1500 0.0200 260);
-  --sidebar-accent: oklch(0.3200 0.0500 290);
-  --sidebar-accent-foreground: oklch(0.9000 0.0400 290);
-  --sidebar-border: oklch(0.3000 0.0200 260);
-  --sidebar-ring: oklch(0.7200 0.1800 35);
+  /* Deep purple night sky for kids */
+  --background: oklch(0.2000 0.0600 280);
+  --foreground: oklch(0.9500 0.0200 95);
+  --card: oklch(0.2500 0.0500 280);
+  --card-foreground: oklch(0.9500 0.0200 95);
+  --popover: oklch(0.2800 0.0500 280);
+  --popover-foreground: oklch(0.9500 0.0200 95);
+  /* Bright pink primary in dark mode */
+  --primary: oklch(0.7500 0.2000 350);
+  --primary-foreground: oklch(0.1500 0.0400 280);
+  /* Glowing yellow secondary */
+  --secondary: oklch(0.8500 0.1400 95);
+  --secondary-foreground: oklch(0.3000 0.0800 85);
+  --muted: oklch(0.3000 0.0400 280);
+  --muted-foreground: oklch(0.7000 0.0300 280);
+  /* Bright teal accent */
+  --accent: oklch(0.7000 0.1400 185);
+  --accent-foreground: oklch(0.1500 0.0600 185);
+  --destructive: oklch(0.6500 0.2200 25);
+  --border: oklch(0.3500 0.0500 280);
+  --input: oklch(0.3000 0.0400 280);
+  --ring: oklch(0.7500 0.2000 350);
+  /* Rainbow chart palette */
+  --chart-1: oklch(0.7500 0.2000 350);
+  --chart-2: oklch(0.7500 0.1800 180);
+  --chart-3: oklch(0.8500 0.1600 95);
+  --chart-4: oklch(0.7500 0.1600 290);
+  --chart-5: oklch(0.7500 0.1800 145);
+  /* Colorful sidebar */
+  --sidebar: oklch(0.3000 0.0800 290);
+  --sidebar-foreground: oklch(0.9500 0.0200 95);
+  --sidebar-primary: oklch(0.8500 0.1400 95);
+  --sidebar-primary-foreground: oklch(0.2500 0.0600 85);
+  --sidebar-accent: oklch(0.7500 0.1600 350);
+  --sidebar-accent-foreground: oklch(0.9500 0.0200 95);
+  --sidebar-border: oklch(0.4000 0.0600 290);
+  --sidebar-ring: oklch(0.8500 0.1400 95);
   --destructive-foreground: oklch(1 0 0);
-  /* Avatar colors (slightly brighter for dark mode) */
-  --avatar-coral: oklch(0.7500 0.1600 30);
-  --avatar-teal: oklch(0.7200 0.1200 180);
-  --avatar-lavender: oklch(0.7500 0.1200 290);
-  --avatar-mint: oklch(0.7800 0.1200 155);
-  --avatar-sunny: oklch(0.8500 0.1500 85);
-  --avatar-sky: oklch(0.7200 0.1200 230);
-  --radius: 0.75rem;
-  --font-sans: "Nunito", "Geist", sans-serif;
+  /* Rainbow avatar colors (bright for dark mode) */
+  --avatar-coral: oklch(0.8000 0.1800 25);
+  --avatar-teal: oklch(0.8000 0.1400 185);
+  --avatar-lavender: oklch(0.8000 0.1400 290);
+  --avatar-mint: oklch(0.8500 0.1400 155);
+  --avatar-sunny: oklch(0.9000 0.1600 95);
+  --avatar-sky: oklch(0.8000 0.1400 230);
+  /* Extra playful colors */
+  --fun-pink: oklch(0.7500 0.2000 350);
+  --fun-purple: oklch(0.7500 0.1800 290);
+  --fun-blue: oklch(0.7500 0.1600 240);
+  --fun-green: oklch(0.8000 0.1800 145);
+  --fun-orange: oklch(0.8000 0.1800 55);
+  --fun-yellow: oklch(0.9000 0.1600 95);
+  --radius: 1rem;
+  --font-sans: "Nunito", "Comic Neue", "Geist", sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Geist Mono, monospace;
-  --shadow-color: hsl(240 30% 10%);
-  --shadow-opacity: 0.30;
-  --shadow-blur: 4px;
+  --shadow-color: hsl(280 40% 20%);
+  --shadow-opacity: 0.35;
+  --shadow-blur: 8px;
   --shadow-spread: 0px;
   --shadow-offset-x: 0px;
-  --shadow-offset-y: 2px;
+  --shadow-offset-y: 4px;
   --letter-spacing: 0em;
   --spacing: 0.25rem;
-  --shadow-2xs: 0px 1px 2px 0px hsl(240 30% 10% / 0.15);
-  --shadow-xs: 0px 1px 3px 0px hsl(240 30% 10% / 0.20);
-  --shadow-sm: 0px 2px 4px 0px hsl(240 30% 10% / 0.20), 0px 1px 2px -1px hsl(240 30% 10% / 0.20);
-  --shadow: 0px 2px 6px 0px hsl(240 30% 10% / 0.25), 0px 1px 3px -1px hsl(240 30% 10% / 0.25);
-  --shadow-md: 0px 4px 8px 0px hsl(240 30% 10% / 0.25), 0px 2px 4px -1px hsl(240 30% 10% / 0.25);
-  --shadow-lg: 0px 6px 12px 0px hsl(240 30% 10% / 0.30), 0px 4px 6px -1px hsl(240 30% 10% / 0.25);
-  --shadow-xl: 0px 10px 20px 0px hsl(240 30% 10% / 0.30), 0px 8px 10px -1px hsl(240 30% 10% / 0.25);
-  --shadow-2xl: 0px 16px 32px 0px hsl(240 30% 10% / 0.40);
+  --shadow-2xs: 0px 2px 4px 0px hsl(280 40% 20% / 0.20);
+  --shadow-xs: 0px 2px 6px 0px hsl(280 40% 20% / 0.25);
+  --shadow-sm: 0px 3px 8px 0px hsl(280 40% 20% / 0.25), 0px 1px 3px -1px hsl(280 40% 20% / 0.20);
+  --shadow: 0px 4px 12px 0px hsl(280 40% 20% / 0.30), 0px 2px 4px -1px hsl(280 40% 20% / 0.25);
+  --shadow-md: 0px 6px 16px 0px hsl(280 40% 20% / 0.30), 0px 3px 6px -1px hsl(280 40% 20% / 0.25);
+  --shadow-lg: 0px 10px 24px 0px hsl(280 40% 20% / 0.35), 0px 5px 10px -1px hsl(280 40% 20% / 0.28);
+  --shadow-xl: 0px 16px 32px 0px hsl(280 40% 20% / 0.40), 0px 8px 16px -1px hsl(280 40% 20% / 0.30);
+  --shadow-2xl: 0px 24px 48px 0px hsl(280 40% 20% / 0.50);
 }
 
 @layer base {
@@ -218,6 +232,119 @@
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
+}
+
+/* Fun background patterns */
+.bg-pattern-dots {
+  background-image: radial-gradient(circle, oklch(0.7500 0.1200 290 / 0.15) 2px, transparent 2px);
+  background-size: 24px 24px;
+}
+
+.bg-pattern-stars {
+  background-image: 
+    radial-gradient(circle at 20% 30%, oklch(0.9000 0.1600 95 / 0.3) 2px, transparent 2px),
+    radial-gradient(circle at 60% 70%, oklch(0.7500 0.2000 350 / 0.25) 3px, transparent 3px),
+    radial-gradient(circle at 80% 20%, oklch(0.7500 0.1400 185 / 0.3) 2px, transparent 2px),
+    radial-gradient(circle at 40% 80%, oklch(0.7500 0.1600 290 / 0.25) 2px, transparent 2px);
+  background-size: 100px 100px;
+}
+
+.bg-pattern-clouds {
+  background-image: 
+    radial-gradient(ellipse 80px 50px at 30% 40%, oklch(1 0 0 / 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 60px 35px at 70% 60%, oklch(1 0 0 / 0.3) 0%, transparent 70%),
+    radial-gradient(ellipse 100px 60px at 50% 80%, oklch(1 0 0 / 0.25) 0%, transparent 70%);
+}
+
+.bg-pattern-rainbow {
+  background: linear-gradient(
+    135deg,
+    oklch(0.9000 0.1000 350 / 0.1) 0%,
+    oklch(0.9200 0.1000 55 / 0.1) 20%,
+    oklch(0.9400 0.1000 95 / 0.1) 40%,
+    oklch(0.9000 0.0800 145 / 0.1) 60%,
+    oklch(0.9000 0.0800 220 / 0.1) 80%,
+    oklch(0.9000 0.1000 290 / 0.1) 100%
+  );
+}
+
+.dark .bg-pattern-dots {
+  background-image: radial-gradient(circle, oklch(0.7500 0.1200 290 / 0.2) 2px, transparent 2px);
+}
+
+.dark .bg-pattern-stars {
+  background-image: 
+    radial-gradient(circle at 20% 30%, oklch(0.9500 0.1600 95 / 0.5) 2px, transparent 2px),
+    radial-gradient(circle at 60% 70%, oklch(0.8000 0.2000 350 / 0.4) 3px, transparent 3px),
+    radial-gradient(circle at 80% 20%, oklch(0.8000 0.1400 185 / 0.5) 2px, transparent 2px),
+    radial-gradient(circle at 40% 80%, oklch(0.8000 0.1600 290 / 0.4) 2px, transparent 2px);
+}
+
+/* Fun bouncy animations */
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(1deg); }
+  75% { transform: translateY(3px) rotate(-1deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* Fun rainbow text */
+.text-rainbow {
+  background: linear-gradient(90deg, 
+    oklch(0.7000 0.2000 350) 0%, 
+    oklch(0.7800 0.1800 55) 25%, 
+    oklch(0.7500 0.1800 145) 50%, 
+    oklch(0.7000 0.1600 240) 75%, 
+    oklch(0.7000 0.1800 290) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Playful bubble buttons */
+.btn-bubble {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-bubble:hover {
+  transform: scale(1.05);
+}
+
+.btn-bubble:active {
+  transform: scale(0.98);
 }
 
 /* Avatar color utilities */
@@ -255,53 +382,85 @@
   box-shadow: var(--shadow-lg);
 }
 
-/* Colorful icon backgrounds */
+/* Vibrant colorful icon backgrounds - kid friendly */
 .icon-bg-coral {
-  background-color: oklch(0.9200 0.0800 35);
-  color: oklch(0.5500 0.1800 35);
+  background-color: oklch(0.8800 0.1200 25);
+  color: oklch(0.5000 0.2000 25);
 }
 .icon-bg-teal {
-  background-color: oklch(0.9200 0.0600 180);
-  color: oklch(0.5000 0.1200 180);
+  background-color: oklch(0.8800 0.1000 185);
+  color: oklch(0.4500 0.1400 185);
 }
 .icon-bg-lavender {
-  background-color: oklch(0.9200 0.0600 290);
-  color: oklch(0.5500 0.1200 290);
+  background-color: oklch(0.8800 0.1000 290);
+  color: oklch(0.5000 0.1600 290);
 }
 .icon-bg-mint {
-  background-color: oklch(0.9200 0.0600 155);
-  color: oklch(0.5000 0.1200 155);
+  background-color: oklch(0.8800 0.1000 155);
+  color: oklch(0.4500 0.1400 155);
 }
 .icon-bg-sunny {
-  background-color: oklch(0.9400 0.0800 85);
-  color: oklch(0.5500 0.1500 85);
+  background-color: oklch(0.9200 0.1200 95);
+  color: oklch(0.5000 0.1600 75);
 }
 .icon-bg-sky {
-  background-color: oklch(0.9200 0.0600 230);
-  color: oklch(0.5000 0.1200 230);
+  background-color: oklch(0.8800 0.1000 230);
+  color: oklch(0.4500 0.1400 230);
+}
+.icon-bg-pink {
+  background-color: oklch(0.8800 0.1200 350);
+  color: oklch(0.5000 0.2000 350);
+}
+.icon-bg-purple {
+  background-color: oklch(0.8500 0.1200 290);
+  color: oklch(0.5000 0.1800 290);
+}
+.icon-bg-green {
+  background-color: oklch(0.8800 0.1200 145);
+  color: oklch(0.4500 0.1600 145);
+}
+.icon-bg-orange {
+  background-color: oklch(0.9000 0.1200 55);
+  color: oklch(0.5000 0.1800 45);
 }
 
 .dark .icon-bg-coral {
-  background-color: oklch(0.3500 0.0800 35);
-  color: oklch(0.8000 0.1400 35);
+  background-color: oklch(0.4000 0.1200 25);
+  color: oklch(0.8500 0.1600 25);
 }
 .dark .icon-bg-teal {
-  background-color: oklch(0.3500 0.0600 180);
-  color: oklch(0.8000 0.1000 180);
+  background-color: oklch(0.4000 0.1000 185);
+  color: oklch(0.8500 0.1200 185);
 }
 .dark .icon-bg-lavender {
-  background-color: oklch(0.3500 0.0600 290);
-  color: oklch(0.8000 0.1000 290);
+  background-color: oklch(0.4000 0.1000 290);
+  color: oklch(0.8500 0.1200 290);
 }
 .dark .icon-bg-mint {
-  background-color: oklch(0.3500 0.0600 155);
-  color: oklch(0.8000 0.1000 155);
+  background-color: oklch(0.4000 0.1000 155);
+  color: oklch(0.8500 0.1200 155);
 }
 .dark .icon-bg-sunny {
-  background-color: oklch(0.3500 0.0800 85);
-  color: oklch(0.8500 0.1200 85);
+  background-color: oklch(0.4500 0.1200 95);
+  color: oklch(0.9000 0.1400 95);
 }
 .dark .icon-bg-sky {
-  background-color: oklch(0.3500 0.0600 230);
-  color: oklch(0.8000 0.1000 230);
+  background-color: oklch(0.4000 0.1000 230);
+  color: oklch(0.8500 0.1200 230);
+}
+.dark .icon-bg-pink {
+  background-color: oklch(0.4000 0.1200 350);
+  color: oklch(0.8500 0.1600 350);
+}
+.dark .icon-bg-purple {
+  background-color: oklch(0.4000 0.1200 290);
+  color: oklch(0.8500 0.1400 290);
+}
+.dark .icon-bg-green {
+  background-color: oklch(0.4000 0.1200 145);
+  color: oklch(0.8500 0.1400 145);
+}
+.dark .icon-bg-orange {
+  background-color: oklch(0.4500 0.1200 55);
+  color: oklch(0.8500 0.1600 55);
 }

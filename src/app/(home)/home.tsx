@@ -12,14 +12,22 @@ import { QuickStats } from "./components/quick-staats"
 import { MiniCalendar } from "./components/mini-calendar"
 import { UpcomingEvents } from "./components/upcomming-events"
 import { AvatarGroup } from "@/components/ui/avatar"
-import { Sparkles } from "lucide-react"
+import { Mascot, FloatingShapes } from "@/components/ui/mascot"
 
-// Get time-appropriate greeting
-function getGreeting(): string {
+// Get time-appropriate greeting with fun messages
+function getGreeting(): { greeting: string; emoji: string } {
   const hour = new Date().getHours()
-  if (hour < 12) return "Good morning"
-  if (hour < 17) return "Good afternoon"
-  return "Good evening"
+  if (hour < 12) return { greeting: "Good morning", emoji: "Rise and shine!" }
+  if (hour < 17) return { greeting: "Good afternoon", emoji: "Keep up the great work!" }
+  return { greeting: "Good evening", emoji: "Time to relax!" }
+}
+
+// Get mascot type based on time
+function getMascotType(): "sunny" | "star" | "cloud" {
+  const hour = new Date().getHours()
+  if (hour >= 6 && hour < 18) return "sunny"
+  if (hour >= 18 && hour < 21) return "cloud"
+  return "star"
 }
 
 export function HomePage() {
@@ -38,38 +46,45 @@ export function HomePage() {
     { name: "Sam", id: "sam-4" },
   ]
 
+  const { greeting, emoji } = getGreeting()
+  const mascotType = getMascotType()
+
   // -----------------------------
   // Loading / error states
   // -----------------------------
   if (hub.loading || home.loading) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4">
-        <div className="w-16 h-16 rounded-2xl icon-bg-coral flex items-center justify-center animate-pulse">
-          <Sparkles className="w-8 h-8" />
+      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-dots relative">
+        <FloatingShapes className="opacity-30" />
+        <Mascot type="sunny" size="xl" mood="excited" />
+        <p className="text-xl text-foreground font-bold">Loading your family hub...</p>
+        <div className="flex gap-2">
+          <div className="w-4 h-4 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0s' }} />
+          <div className="w-4 h-4 rounded-full bg-secondary animate-bounce" style={{ animationDelay: '0.1s' }} />
+          <div className="w-4 h-4 rounded-full bg-accent animate-bounce" style={{ animationDelay: '0.2s' }} />
         </div>
-        <p className="text-lg text-muted-foreground font-medium">Loading your family hub...</p>
       </div>
     )
   }
 
   if (!hub.hub) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4">
-        <div className="w-16 h-16 rounded-2xl icon-bg-lavender flex items-center justify-center">
-          <Sparkles className="w-8 h-8" />
-        </div>
-        <p className="text-lg text-muted-foreground font-medium">Not paired yet</p>
+      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-stars relative">
+        <FloatingShapes className="opacity-30" />
+        <Mascot type="house" size="xl" mood="thinking" />
+        <p className="text-xl text-foreground font-bold">Not paired yet</p>
+        <p className="text-muted-foreground">Let&apos;s connect your smart home!</p>
       </div>
     )
   }
 
   if (hub.error || home.error) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4">
-        <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center">
-          <Sparkles className="w-8 h-8 text-destructive" />
-        </div>
-        <p className="text-lg text-destructive font-medium">Something went wrong</p>
+      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-dots relative">
+        <FloatingShapes className="opacity-30" />
+        <Mascot type="cloud" size="xl" mood="sleepy" />
+        <p className="text-xl text-destructive font-bold">Oops! Something went wrong</p>
+        <p className="text-muted-foreground">Don&apos;t worry, we&apos;ll fix it!</p>
       </div>
     )
   }
@@ -78,16 +93,22 @@ export function HomePage() {
   // Main layout
   // -----------------------------
   return (
-    <div className="h-screen flex flex-col gap-5 p-4 overflow-hidden">
-      {/* Welcome header */}
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold text-foreground">
-            {getGreeting()}, Family!
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {"Here's"} what{"'s"} happening in your home today
-          </p>
+    <div className="h-screen flex flex-col gap-5 p-4 overflow-hidden bg-pattern-dots relative">
+      {/* Floating decorative shapes */}
+      <FloatingShapes className="opacity-20" />
+
+      {/* Welcome header with mascot */}
+      <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-4">
+          <Mascot type={mascotType} size="md" mood="happy" />
+          <div className="flex flex-col gap-0.5">
+            <h1 className="text-3xl font-extrabold text-foreground">
+              {greeting}, <span className="text-rainbow">Family!</span>
+            </h1>
+            <p className="text-sm text-muted-foreground font-medium">
+              {emoji}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <AvatarGroup members={familyMembers} size="md" />
@@ -95,16 +116,18 @@ export function HomePage() {
       </div>
 
       {/* Clock and weather row */}
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4 relative z-10">
         <LiveClock />
         <WeatherWidget />
       </div>
 
       {/* Quick stats */}
-      <QuickStats {...home.stats} />
+      <div className="relative z-10">
+        <QuickStats {...home.stats} />
+      </div>
 
       {/* Calendar and events grid */}
-      <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-4 flex-1 min-h-0">
+      <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-4 flex-1 min-h-0 relative z-10">
         <MiniCalendar
           selectedDate={selectedDate}
           onDateSelect={setSelectedDate}
