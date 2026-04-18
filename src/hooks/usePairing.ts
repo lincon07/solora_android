@@ -1,81 +1,227 @@
-import { createPairingSession, fetchPairingStatus } from "@/api/pairing"
+import {
+  createPairingSession,
+  fetchPairingStatus,
+  type PairingType,
+  type PairingStatus,
+  type PairingStatusResponse,
+} from "@/api/pairing"
 import { generateQR } from "@/utils/common/create-qr"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
-type UsePairingOptions = {
-  type: "hub" | "device" | "member"
+/* =========================================================
+ * Types
+ * ========================================================= */
+
+export type PairingState = "idle" | "loading" | "polling" | "resolved" | "error"
+
+export type UsePairingOptions = {
+  type: PairingType
   hubId?: string
-  onResolved?: (data: {
-    status?: string
-    type?: string
-    userId?: string | null
-    hubId?: string | null
-    deviceToken?: string | null
-  }) => void
+  pollIntervalMs?: number
+  autoStart?: boolean
+  onResolved?: (data: PairingStatusResponse) => void
+  onError?: (error: Error) => void
 }
 
-export function usePairing(options: UsePairingOptions) {
-  const { type, hubId, onResolved } = options
+export type UsePairingReturn = {
+  // State
+  state: PairingState
+  pairing: { pairingId: string; pairingCode: string; expiresAt: number } | null
+  qr: string | null
+  status: PairingStatus | null
+  error: string | null
+  
+  // Resolved data
+  resolvedData: PairingStatusResponse | null
+  
+  // Actions
+  start: () => Promise<void>
+  stop: () => void
+  reset: () => void
+}
 
-  const [pairing, setPairing] = useState<{ pairingId: string; pairingCode: string } | null>(null)
+/* =========================================================
+ * Hook
+ * ========================================================= */
+
+export function usePairing(options: UsePairingOptions): UsePairingReturn {
+  const {
+    type,
+    hubId,
+    pollIntervalMs = 2000,
+    autoStart = false,
+    onResolved,
+    onError,
+  } = options
+
+  // State
+  const [state, setState] = useState<PairingState>("idle")
+  const [pairing, setPairing] = useState<UsePairingReturn["pairing"]>(null)
   const [qr, setQr] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState<PairingStatus | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [resolvedData, setResolvedData] = useState<PairingStatusResponse | null>(null)
 
-  const pollingRef = useRef<{ cancelled: boolean; timeoutId?: ReturnType<typeof setTimeout> }>({
-    cancelled: false,
+  // Refs for cleanup
+  const pollingRef = useRef<{
+    active: boolean
+    timeoutId: ReturnType<typeof setTimeout> | null
+  }>({
+    active: false,
+    timeoutId: null,
   })
 
-  function stopPolling() {
-    pollingRef.current.cancelled = true
-    if (pollingRef.current.timeoutId) clearTimeout(pollingRef.current.timeoutId)
-  }
+  const mountedRef = useRef(true)
 
-  function reset() {
-    stopPolling()
+  /* ---------------------------------------------------------
+   * Stop polling
+   * --------------------------------------------------------- */
+  const stop = useCallback(() => {
+    pollingRef.current.active = false
+    if (pollingRef.current.timeoutId) {
+      clearTimeout(pollingRef.current.timeoutId)
+      pollingRef.current.timeoutId = null
+    }
+  }, [])
+
+  /* ---------------------------------------------------------
+   * Reset to initial state
+   * --------------------------------------------------------- */
+  const reset = useCallback(() => {
+    stop()
+    setState("idle")
     setPairing(null)
     setQr(null)
-    setLoading(false)
-  }
+    setStatus(null)
+    setError(null)
+    setResolvedData(null)
+  }, [stop])
 
-  async function start() {
-    reset()
-    pollingRef.current.cancelled = false
-    setLoading(true)
-
-    const session = await createPairingSession({ type, hubId })
-    setPairing(session)
-
-    const qrImg = await generateQR(JSON.stringify({ pairingId: session.pairingId }))
-    setQr(qrImg)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    if (!pairing?.pairingId) return
-
-    async function poll() {
-      if (pollingRef.current.cancelled) return
+  /* ---------------------------------------------------------
+   * Poll for status changes
+   * --------------------------------------------------------- */
+  const pollStatus = useCallback(
+    async (pairingId: string) => {
+      if (!pollingRef.current.active || !mountedRef.current) return
 
       try {
-        const res = await fetchPairingStatus(pairing?.pairingId as string)
-        console.log("🔄 Pairing poll:", res)
+        const res = await fetchPairingStatus(pairingId)
 
+        if (!mountedRef.current) return
+
+        console.log("[v0] Pairing poll result:", res)
+        setStatus(res.status)
+
+        // Check if resolved
         if (res.status === "paired" || res.status === "claimed" || res.status === "expired") {
-          stopPolling()
-          onResolved?.(res as any)
+          stop()
+          setResolvedData(res)
+          setState("resolved")
+          onResolved?.(res)
           return
         }
+
+        // Continue polling
+        if (pollingRef.current.active) {
+          pollingRef.current.timeoutId = setTimeout(
+            () => pollStatus(pairingId),
+            pollIntervalMs
+          )
+        }
       } catch (err) {
-        console.error("Pairing poll error:", err)
+        console.error("[v0] Pairing poll error:", err)
+        // Continue polling despite errors
+        if (pollingRef.current.active && mountedRef.current) {
+          pollingRef.current.timeoutId = setTimeout(
+            () => pollStatus(pairingId),
+            pollIntervalMs
+          )
+        }
       }
+    },
+    [pollIntervalMs, onResolved, stop]
+  )
 
-      pollingRef.current.timeoutId = setTimeout(poll, 2000)
+  /* ---------------------------------------------------------
+   * Start a new pairing session
+   * --------------------------------------------------------- */
+  const start = useCallback(async () => {
+    // Reset previous state
+    reset()
+    setState("loading")
+    setError(null)
+
+    try {
+      // Create pairing session
+      const session = await createPairingSession({ type, hubId })
+
+      if (!mountedRef.current) return
+
+      console.log("[v0] Pairing session created:", session)
+
+      setPairing({
+        pairingId: session.pairingId,
+        pairingCode: session.pairingCode,
+        expiresAt: session.expiresAt,
+      })
+      setStatus("pending")
+
+      // Generate QR code
+      const qrData = JSON.stringify({
+        pairingId: session.pairingId,
+        pairingCode: session.pairingCode,
+        type,
+      })
+      const qrImg = await generateQR(qrData)
+
+      if (!mountedRef.current) return
+
+      setQr(qrImg)
+      setState("polling")
+
+      // Start polling
+      pollingRef.current.active = true
+      pollStatus(session.pairingId)
+    } catch (err: any) {
+      if (!mountedRef.current) return
+
+      console.error("[v0] Failed to create pairing session:", err)
+      setError(err?.message ?? "Failed to create pairing session")
+      setState("error")
+      onError?.(err)
     }
+  }, [type, hubId, reset, pollStatus, onError])
 
-    poll()
-    return () => stopPolling()
+  /* ---------------------------------------------------------
+   * Auto-start if enabled
+   * --------------------------------------------------------- */
+  useEffect(() => {
+    if (autoStart) {
+      start()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pairing?.pairingId])
+  }, [autoStart])
 
-  return { pairing, qr, loading, start, reset }
+  /* ---------------------------------------------------------
+   * Cleanup on unmount
+   * --------------------------------------------------------- */
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+      stop()
+    }
+  }, [stop])
+
+  return {
+    state,
+    pairing,
+    qr,
+    status,
+    error,
+    resolvedData,
+    start,
+    stop,
+    reset,
+  }
 }
