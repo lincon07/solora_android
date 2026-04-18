@@ -1,6 +1,12 @@
 import { API_BASE } from "@/utils/common/api-url"
 
+/* =========================================================
+ * Types
+ * ========================================================= */
+
 export type PairingType = "hub" | "device" | "member"
+
+export type PairingStatus = "pending" | "claimed" | "paired" | "expired"
 
 export type PairingSessionResponse = {
   pairingId: string
@@ -9,17 +15,26 @@ export type PairingSessionResponse = {
 }
 
 export type PairingStatusResponse = {
-  status: "pending" | "claimed" | "paired" | "expired"
+  status: PairingStatus
   type: PairingType
-  hubId?: string | null
-  userId?: string | null
-  deviceToken?: string | null
+  hubId: string | null
+  userId: string | null
+  deviceToken: string | null
 }
 
-export async function createPairingSession(input?: {
+export type CreatePairingInput = {
   type?: PairingType
-  hubId?: string
-}): Promise<PairingSessionResponse> {
+  hubId?: string | null
+}
+
+/* =========================================================
+ * Create Pairing Session (KIOSK)
+ * Creates a new pairing session that generates a QR code
+ * ========================================================= */
+
+export async function createPairingSession(
+  input?: CreatePairingInput
+): Promise<PairingSessionResponse> {
   const res = await fetch(`${API_BASE}/pairing/session`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -37,7 +52,14 @@ export async function createPairingSession(input?: {
   return res.json()
 }
 
-export async function fetchPairingStatus(pairingId: string): Promise<PairingStatusResponse> {
+/* =========================================================
+ * Fetch Pairing Status (KIOSK POLLING)
+ * Polls to check if pairing has been claimed/paired
+ * ========================================================= */
+
+export async function fetchPairingStatus(
+  pairingId: string
+): Promise<PairingStatusResponse> {
   const res = await fetch(`${API_BASE}/pairing/status/${pairingId}`)
 
   if (!res.ok) {
@@ -46,4 +68,54 @@ export async function fetchPairingStatus(pairingId: string): Promise<PairingStat
   }
 
   return res.json()
+}
+
+/* =========================================================
+ * Poll until resolved (utility)
+ * Polls pairing status until it resolves or times out
+ * ========================================================= */
+
+export type PollOptions = {
+  pairingId: string
+  intervalMs?: number
+  timeoutMs?: number
+  onStatus?: (status: PairingStatusResponse) => void
+}
+
+export async function pollPairingUntilResolved(
+  options: PollOptions
+): Promise<PairingStatusResponse> {
+  const { pairingId, intervalMs = 2000, timeoutMs = 300000, onStatus } = options
+
+  const startTime = Date.now()
+
+  return new Promise((resolve, reject) => {
+    const poll = async () => {
+      // Check timeout
+      if (Date.now() - startTime > timeoutMs) {
+        reject(new Error("Pairing polling timed out"))
+        return
+      }
+
+      try {
+        const status = await fetchPairingStatus(pairingId)
+        onStatus?.(status)
+
+        // Check if resolved
+        if (status.status === "paired" || status.status === "claimed" || status.status === "expired") {
+          resolve(status)
+          return
+        }
+
+        // Continue polling
+        setTimeout(poll, intervalMs)
+      } catch (err) {
+        console.error("[pairing] Poll error:", err)
+        // Continue polling despite errors
+        setTimeout(poll, intervalMs)
+      }
+    }
+
+    poll()
+  })
 }
