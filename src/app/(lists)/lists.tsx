@@ -40,7 +40,10 @@ import {
   ClipboardList,
   Package,
   GripVertical,
+  Sparkles,
+  Star,
 } from "lucide-react"
+import { FloatingStars, CuteCat, CuteDog } from "@/components/ui/fun-decorations"
 
 
 import {
@@ -585,36 +588,61 @@ export function ListsPage() {
   /* ------------------------------ Guards ------------------------------ */
 
     if (hub.loading) {
-    return <div className="h-screen flex items-center justify-center">Loading…</div>
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <CuteCat size="lg" />
+        <p className="text-lg font-semibold text-foreground">Loading your lists...</p>
+      </div>
+    )
   }
 
   if (!hubId) {
-    return <div className="h-screen flex items-center justify-center">Not paired</div>
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <CuteDog size="lg" />
+        <p className="text-lg font-semibold text-foreground">Hub not paired yet</p>
+        <p className="text-sm text-muted-foreground">Connect your hub to see your lists!</p>
+      </div>
+    )
   }
 
   /* -------------------------------- UI -------------------------------- */
 
   return (
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="flex-shrink-0 border-b border-border px-5 py-4">
+    <div className="h-screen bg-background flex flex-col overflow-hidden relative">
+      {/* Fun background decorations */}
+      <FloatingStars className="opacity-30" />
+      
+      {/* Header with playful styling */}
+      <header className="flex-shrink-0 border-b border-border px-5 py-4 bg-gradient-to-r from-card via-card to-[oklch(0.95_0.06_350)] relative z-10">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">Lists</h1>
-            <p className="text-sm text-muted-foreground">
-              {lists.length} lists
-            </p>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[oklch(0.75_0.2_350)] to-[oklch(0.7_0.18_290)] flex items-center justify-center shadow-md">
+              <ListTodo className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                My Lists
+                <Sparkles className="w-5 h-5 text-[oklch(0.9_0.16_95)]" />
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {lists.length} {lists.length === 1 ? "list" : "lists"} to organize
+              </p>
+            </div>
           </div>
-          <Button onClick={openCreateList} className="h-11 px-4">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button 
+            onClick={openCreateList} 
+            className="h-12 px-5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.2_350)] to-[oklch(0.7_0.18_290)] hover:opacity-90 shadow-md font-semibold"
+          >
+            <Plus className="w-5 h-5 mr-2" />
             New List
           </Button>
         </div>
       </header>
 
-      {/* Kanban Board */}
-      <main className="flex-1 overflow-x-auto overflow-y-hidden">
-        <div className="flex gap-4 p-5 h-full min-w-max">
+      {/* Kanban Board with playful styling */}
+      <main className="flex-1 overflow-x-auto overflow-y-hidden relative z-10">
+        <div className="flex gap-5 p-6 h-full min-w-max">
           {lists.map((list, index) => {
             const IconComponent = getListIcon(list.icon)
             const owner = list.ownerId ? getMember(list.ownerId) : null
@@ -626,11 +654,11 @@ export function ListsPage() {
             return (
               <div
                 key={list.id}
-                className={`w-72 flex-shrink-0 bg-card border rounded-2xl flex flex-col transition-all ${
+                className={`w-80 flex-shrink-0 bg-card border-2 rounded-3xl flex flex-col transition-all shadow-md hover:shadow-lg ${
                   dragOverListIndex === index
-                    ? "border-foreground"
+                    ? "border-[oklch(0.75_0.2_350)] scale-102"
                     : dragOverListId === list.id
-                    ? "border-foreground/50 bg-secondary/30"
+                    ? "border-[oklch(0.75_0.15_350)] bg-[oklch(0.97_0.03_350)]"
                     : "border-border"
                 }`}
                 onDragOver={(e) => {
@@ -649,30 +677,35 @@ export function ListsPage() {
                   if (draggedListId) void handleListDrop(index)
                 }}
               >
-                {/* List Header */}
+                {/* List Header - Colorful and fun */}
                 <div
-                  className="p-4 border-b border-border cursor-grab active:cursor-grabbing"
+                  className="p-5 border-b border-border cursor-grab active:cursor-grabbing bg-gradient-to-r from-card to-muted/20"
                   draggable
                   onDragStart={(e) => handleListDragStart(e, list.id)}
                   onDragEnd={handleListDragEnd}
                 >
-                  <div className="flex items-center gap-3">
-                    <GripVertical className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <div className="flex items-center gap-4">
+                    <GripVertical className="w-5 h-5 text-muted-foreground/50 flex-shrink-0" />
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: `${ownerColor}15` }}
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${ownerColor}30, ${ownerColor}15)`,
+                        border: `2px solid ${ownerColor}40`
+                      }}
                     >
                       <IconComponent
-                        className="w-5 h-5"
+                        className="w-6 h-6"
                         style={{ color: ownerColor }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-foreground truncate">
+                      <h3 className="font-bold text-lg text-foreground truncate">
                         {list.name}
                       </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {ownerName} · {completedCount}/{list.tasks.length}
+                      <p className="text-sm text-muted-foreground flex items-center gap-2">
+                        <span>{ownerName}</span>
+                        <Star className="w-3 h-3 text-[oklch(0.85_0.14_95)]" />
+                        <span>{completedCount}/{list.tasks.length}</span>
                       </p>
                     </div>
                     <DropdownMenu>
@@ -704,10 +737,10 @@ export function ListsPage() {
                     </DropdownMenu>
                   </div>
 
-                  {/* Progress bar */}
-                  <div className="mt-3 h-1 bg-secondary rounded-full overflow-hidden">
+                  {/* Fun progress bar */}
+                  <div className="mt-4 h-2.5 bg-muted rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-foreground transition-all"
+                      className="h-full rounded-full bg-gradient-to-r from-[oklch(0.75_0.18_145)] to-[oklch(0.7_0.16_185)] transition-all"
                       style={{
                         width: `${
                           list.tasks.length
@@ -717,6 +750,11 @@ export function ListsPage() {
                       }}
                     />
                   </div>
+                  {list.tasks.length > 0 && completedCount === list.tasks.length && (
+                    <div className="mt-2 text-center">
+                      <span className="text-xs font-semibold text-[oklch(0.65_0.16_145)]">All done! Great job!</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Tasks */}
@@ -847,20 +885,24 @@ export function ListsPage() {
                   })}
 
                   {list.tasks.length === 0 && (
-                    <div className="text-center py-8 text-muted-foreground text-sm">
-                      No tasks yet
+                    <div className="text-center py-10">
+                      <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+                        <Sparkles className="w-8 h-8 text-muted-foreground/50" />
+                      </div>
+                      <p className="text-muted-foreground font-medium">No tasks yet</p>
+                      <p className="text-xs text-muted-foreground/70 mt-1">Add your first task below!</p>
                     </div>
                   )}
                 </div>
 
-                {/* Add Task Button */}
-                <div className="p-3 border-t border-border">
+                {/* Add Task Button - Fun and inviting */}
+                <div className="p-4 border-t border-border">
                   <Button
                     variant="ghost"
-                    className="w-full h-10 text-muted-foreground hover:text-foreground"
+                    className="w-full h-12 rounded-2xl text-muted-foreground hover:text-foreground hover:bg-[oklch(0.95_0.05_350)] border-2 border-dashed border-muted hover:border-[oklch(0.8_0.12_350)] transition-all"
                     onClick={() => openCreateTask(list.id)}
                   >
-                    <Plus className="w-4 h-4 mr-2" />
+                    <Plus className="w-5 h-5 mr-2" />
                     Add Task
                   </Button>
                 </div>
@@ -868,14 +910,17 @@ export function ListsPage() {
             )
           })}
 
-          {/* Add List Column */}
+          {/* Add List Column - Fun and inviting */}
           <div
             onClick={openCreateList}
-            className="w-72 flex-shrink-0 border-2 border-dashed border-border rounded-2xl flex items-center justify-center cursor-pointer hover:border-muted-foreground/50 hover:bg-secondary/20 transition-all"
+            className="w-80 flex-shrink-0 border-3 border-dashed border-[oklch(0.8_0.1_350)] rounded-3xl flex items-center justify-center cursor-pointer hover:border-[oklch(0.7_0.18_350)] hover:bg-[oklch(0.97_0.03_350)] transition-all group"
           >
-            <div className="text-center">
-              <Plus className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-              <span className="text-muted-foreground">Add List</span>
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-[oklch(0.9_0.1_350)] to-[oklch(0.85_0.08_290)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Plus className="w-8 h-8 text-[oklch(0.6_0.15_350)]" />
+              </div>
+              <span className="text-lg font-semibold text-muted-foreground group-hover:text-foreground transition-colors">Create New List</span>
+              <p className="text-sm text-muted-foreground/70 mt-1">Organize your tasks</p>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, Bell, Volume2 } from "lucide-react";
+import { Check, Bell, Volume2, MapPin, Clock } from "lucide-react";
 
 type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-center" | "bottom-center";
 
@@ -39,88 +39,130 @@ export function NotificationsSection() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
-          <Bell className="w-5 h-5 text-foreground" />
+      {/* Header with fun icon */}
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[oklch(0.75_0.14_185)] to-[oklch(0.7_0.16_145)] flex items-center justify-center shadow-md animate-bounce-gentle">
+          <Bell className="w-7 h-7 text-white" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Notifications</h2>
-          <p className="text-sm text-muted-foreground">Alert position and sound</p>
+          <h2 className="text-xl font-bold text-foreground">Notifications</h2>
+          <p className="text-sm text-muted-foreground">Stay in the loop!</p>
         </div>
       </div>
 
       {/* Position Selection */}
       <div className="space-y-3">
-        <Label className="text-sm text-muted-foreground">Position</Label>
+        <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <MapPin className="w-4 h-4" />
+          Where to show alerts
+        </Label>
         <Select value={position} onValueChange={(v) => setPosition(v as Position)}>
-          <SelectTrigger className="h-12 text-base bg-input border-border">
+          <SelectTrigger className="h-14 text-base rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.14_185)] transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
+          <SelectContent className="rounded-xl">
             {positionOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="h-11 text-base">
+              <SelectItem key={option.value} value={option.value} className="h-12 rounded-lg text-base">
                 {option.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
+        
+        {/* Visual position preview */}
+        <div className="h-24 rounded-2xl bg-muted/30 border-2 border-dashed border-muted relative">
+          <div 
+            className={`absolute w-16 h-8 rounded-lg bg-gradient-to-r from-[oklch(0.75_0.14_185)] to-[oklch(0.7_0.16_145)] shadow-md transition-all ${
+              position === "top-left" ? "top-2 left-2" :
+              position === "top-center" ? "top-2 left-1/2 -translate-x-1/2" :
+              position === "top-right" ? "top-2 right-2" :
+              position === "bottom-left" ? "bottom-2 left-2" :
+              position === "bottom-center" ? "bottom-2 left-1/2 -translate-x-1/2" :
+              "bottom-2 right-2"
+            }`}
+          />
+        </div>
       </div>
 
       {/* Duration */}
       <div className="space-y-3">
-        <Label className="text-sm text-muted-foreground">Display Duration</Label>
+        <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Clock className="w-4 h-4" />
+          How long to show
+        </Label>
         <Select value={duration} onValueChange={setDuration}>
-          <SelectTrigger className="h-12 text-base bg-input border-border">
+          <SelectTrigger className="h-14 text-base rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.14_185)] transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border">
-            <SelectItem value="3" className="h-11 text-base">3 seconds</SelectItem>
-            <SelectItem value="5" className="h-11 text-base">5 seconds</SelectItem>
-            <SelectItem value="10" className="h-11 text-base">10 seconds</SelectItem>
-            <SelectItem value="0" className="h-11 text-base">Until dismissed</SelectItem>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="3" className="h-12 rounded-lg text-base">3 seconds (quick peek)</SelectItem>
+            <SelectItem value="5" className="h-12 rounded-lg text-base">5 seconds (just right)</SelectItem>
+            <SelectItem value="10" className="h-12 rounded-lg text-base">10 seconds (take your time)</SelectItem>
+            <SelectItem value="0" className="h-12 rounded-lg text-base">Until I tap it</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      {/* Sound Toggle */}
-      <div className="rounded-xl bg-card border border-border p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Volume2 className="w-5 h-5 text-muted-foreground" />
-            <div>
-              <span className="text-base font-medium text-foreground">Sound</span>
-              <p className="text-sm text-muted-foreground">Play sound on alerts</p>
+      {/* Sound Toggle - Fun card */}
+      <div className="rounded-2xl bg-gradient-to-br from-card to-muted/30 border-2 border-border overflow-hidden">
+        <div className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                soundEnabled 
+                  ? "bg-gradient-to-br from-[oklch(0.75_0.18_290)] to-[oklch(0.65_0.16_260)]"
+                  : "bg-muted"
+              }`}>
+                <Volume2 className={`w-6 h-6 ${soundEnabled ? "text-white" : "text-muted-foreground"}`} />
+              </div>
+              <div>
+                <span className="text-base font-semibold text-foreground">Sound Effects</span>
+                <p className="text-sm text-muted-foreground">Ding dong!</p>
+              </div>
             </div>
+            <Switch 
+              checked={soundEnabled} 
+              onCheckedChange={setSoundEnabled}
+              className="data-[state=checked]:bg-[oklch(0.75_0.18_290)]"
+            />
           </div>
-          <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
         </div>
 
         {/* Volume Slider */}
         {soundEnabled && (
-          <div className="mt-4 pt-4 border-t border-border">
-            <div className="flex items-center justify-between mb-3">
-              <Label className="text-sm text-muted-foreground">Volume</Label>
-              <span className="text-sm text-foreground">{soundVolume[0]}%</span>
+          <div className="px-5 pb-5 pt-0 border-t border-border/50">
+            <div className="pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <Label className="text-sm font-medium text-muted-foreground">Volume</Label>
+                <span className="text-lg font-bold text-[oklch(0.75_0.18_290)]">{soundVolume[0]}%</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <Volume2 className="w-4 h-4 text-muted-foreground shrink-0" />
+                <Slider
+                  value={soundVolume}
+                  onValueChange={setSoundVolume}
+                  min={0}
+                  max={100}
+                  step={5}
+                  className="flex-1"
+                />
+                <Volume2 className="w-6 h-6 text-[oklch(0.75_0.18_290)] shrink-0" />
+              </div>
             </div>
-            <Slider
-              value={soundVolume}
-              onValueChange={setSoundVolume}
-              min={0}
-              max={100}
-              step={5}
-              className="py-2"
-            />
           </div>
         )}
       </div>
 
       {/* Save Button */}
-      <Button className="w-full h-14 text-base font-medium" onClick={handleSave}>
+      <Button 
+        className="w-full h-14 text-lg font-semibold rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.14_185)] to-[oklch(0.7_0.16_145)] hover:opacity-90 transition-opacity shadow-lg"
+        onClick={handleSave}
+      >
         {saved ? (
-          <>
-            <Check className="w-5 h-5 mr-2" />
-            Saved
-          </>
+          <span className="flex items-center gap-2">
+            <Check className="w-6 h-6" />
+            Saved!
+          </span>
         ) : (
           "Save Changes"
         )}

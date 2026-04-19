@@ -36,7 +36,10 @@ import {
   Clock,
   ChefHat,
   UtensilsCrossed,
+  Sparkles,
+  Heart,
 } from "lucide-react";
+import { FloatingClouds, SunnyCorner, CuteBunny } from "@/components/ui/fun-decorations";
 
 import { createHubMealsClient, MealDTO, MealType } from "@/api/meals";
 import { useHub } from "@/providers/hub";
@@ -286,63 +289,90 @@ export function MealPlanner() {
    * ====================================================== */
 
   if (hubLoading) {
-    return <div className="p-4 text-muted-foreground">Loading hub…</div>;
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <CuteBunny size="lg" />
+        <p className="text-lg font-semibold text-foreground">Loading meal plans...</p>
+      </div>
+    );
   }
 
   if (hubError) {
-    return <div className="p-4 text-destructive">{hubError}</div>;
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <div className="w-16 h-16 rounded-2xl bg-destructive/20 flex items-center justify-center">
+          <UtensilsCrossed className="w-8 h-8 text-destructive" />
+        </div>
+        <p className="text-destructive font-medium">{hubError}</p>
+      </div>
+    );
   }
 
   return (
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* HEADER */}
-      <header className="border-b px-4 py-3">
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center gap-2">
-            <UtensilsCrossed className="w-5 h-5" />
-            <h1 className="text-lg font-semibold">Meal Planner</h1>
+    <div className="h-screen bg-background flex flex-col overflow-hidden relative">
+      {/* Fun background decorations */}
+      <FloatingClouds className="opacity-30" />
+      <SunnyCorner className="opacity-70" />
+      
+      {/* HEADER - Playful and fun */}
+      <header className="border-b border-border px-5 py-4 bg-gradient-to-r from-card via-card to-[oklch(0.95_0.08_55)] relative z-10">
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[oklch(0.78_0.18_55)] to-[oklch(0.7_0.16_25)] flex items-center justify-center shadow-md">
+              <UtensilsCrossed className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                Meal Planner
+                <Heart className="w-5 h-5 text-[oklch(0.75_0.2_350)] animate-bounce-gentle" />
+              </h1>
+              <p className="text-sm text-muted-foreground">Plan yummy meals for your family</p>
+            </div>
           </div>
           <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setCurrentDate(new Date())} // ✅ FIX: real today
+            className="h-11 px-5 rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.18_145)] to-[oklch(0.7_0.16_185)] hover:opacity-90 shadow-md font-semibold"
+            onClick={() => setCurrentDate(new Date())}
           >
             Today
           </Button>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center gap-4">
           <Button
             variant="ghost"
             size="icon"
+            className="h-10 w-10 rounded-xl hover:bg-[oklch(0.95_0.05_55)]"
             onClick={() =>
               setCurrentDate(new Date(currentDate.getTime() - 604800000))
             }
           >
-            <ChevronLeft />
+            <ChevronLeft className="w-5 h-5" />
           </Button>
 
-          <span className="text-sm font-medium">
-            {weekDays[0].toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}{" "}
-            –{" "}
-            {weekDays[6].toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </span>
+          <div className="px-6 py-2 rounded-2xl bg-gradient-to-r from-[oklch(0.95_0.05_95)] to-[oklch(0.92_0.06_55)] border-2 border-[oklch(0.88_0.08_55)]">
+            <span className="text-base font-bold text-foreground">
+              {weekDays[0].toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}{" "}
+              –{" "}
+              {weekDays[6].toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
 
           <Button
             variant="ghost"
             size="icon"
+            className="h-10 w-10 rounded-xl hover:bg-[oklch(0.95_0.05_55)]"
             onClick={() =>
               setCurrentDate(new Date(currentDate.getTime() + 604800000))
             }
           >
-            <ChevronRight />
+            <ChevronRight className="w-5 h-5" />
           </Button>
         </div>
 

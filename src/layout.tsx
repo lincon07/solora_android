@@ -10,10 +10,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
   const hideSidebar = location.pathname.startsWith("/onboard-wizzard")
 
-  // 🚫 Onboarding (NO sidebar)
+  // 🚫 Onboarding (NO sidebar) - Fun background for kids
   if (hideSidebar) {
     return (
-      <main className="min-h-screen w-full flex flex-col overflow-hidden">
+      <main className="min-h-screen w-full flex flex-col overflow-hidden bg-pattern-stars bg-pattern-rainbow">
         <PairingProvider>{children}</PairingProvider>
         <Toaster />
       </main>

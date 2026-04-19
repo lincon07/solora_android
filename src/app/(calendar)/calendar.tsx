@@ -14,6 +14,7 @@ import { useCalendarData } from "@/hooks/useCalendarData"
 import type { CalendarEvent, Calendar, HubMember } from "./types"
 import { createCalendar, updateCalendar, deleteCalendar } from "@/api/calender"
 import { useHub } from "@/providers/hub"
+import { FloatingStars, CuteCat } from "@/components/ui/fun-decorations"
 
 export type ViewType = "day" | "month" | "year"
 
@@ -64,11 +65,28 @@ export function CalendarPage() {
   }, [calendars])
 
   if (hubLoading || calendarLoading) {
-    return <div className="p-6 text-muted-foreground">Loading…</div>
+    return (
+      <div className="h-full flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <CuteCat size="lg" />
+        <p className="text-lg font-semibold text-foreground">Loading your calendar...</p>
+      </div>
+    )
   }
 
   if (!hubId) {
-    return <div className="p-6 text-destructive">No hub available</div>
+    return (
+      <div className="h-full flex flex-col items-center justify-center gap-4 bg-pattern-dots">
+        <div className="w-16 h-16 rounded-2xl bg-destructive/20 flex items-center justify-center">
+          <svg className="w-8 h-8 text-destructive" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+        </div>
+        <p className="text-destructive font-medium">No hub available</p>
+      </div>
+    )
   }
 
   const visibleEvents = events.filter((e) => visibleCalendarIds.includes(e.calendarId))
@@ -160,8 +178,9 @@ export function CalendarPage() {
   }
 
   return (
-    // ✅ fits inside Layout main, no h-screen/w-screen
-    <div className="flex flex-col h-full overflow-hidden">
+    // Fun calendar with playful background
+    <div className="flex flex-col h-full overflow-hidden relative bg-pattern-dots">
+      <FloatingStars className="opacity-20" />
       <CalendarHeader
         currentDate={currentDate}
         view={view}

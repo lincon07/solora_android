@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Check, Pencil, Settings } from "lucide-react"
+import { Check, Pencil, Home, Globe, Sparkles } from "lucide-react"
 
 import { fetchHubMe } from "@/api/hub"
 import { updateHubSettings } from "@/api/hub"
@@ -37,9 +37,6 @@ export function HubSettingsSection() {
   const [isEditingName, setIsEditingName] = useState(false)
   const [isEditingAlias, setIsEditingAlias] = useState(false)
 
-  /* --------------------------------------------
-   * Load hub
-   * ------------------------------------------ */
   useEffect(() => {
     async function load() {
       try {
@@ -58,9 +55,6 @@ export function HubSettingsSection() {
     load()
   }, [])
 
-  /* --------------------------------------------
-   * Save
-   * ------------------------------------------ */
   async function handleSave() {
     if (!hubId) return
 
@@ -77,61 +71,78 @@ export function HubSettingsSection() {
   }
 
   if (loading) {
-    return <div className="text-sm text-muted-foreground">Loading hub settings…</div>
+    return (
+      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <div className="w-5 h-5 rounded-full border-2 border-current border-t-transparent animate-spin" />
+        Loading hub settings...
+      </div>
+    )
   }
 
   if (!hubId) {
     return (
-      <div className="text-sm text-muted-foreground">
-        Hub not paired yet.
+      <div className="rounded-2xl bg-card border-2 border-dashed border-muted p-6 text-center">
+        <Home className="w-10 h-10 mx-auto mb-3 text-muted-foreground opacity-50" />
+        <p className="text-muted-foreground font-medium">Hub not paired yet</p>
+        <p className="text-sm text-muted-foreground/70 mt-1">Connect your hub to manage settings</p>
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
-          <Settings className="w-5 h-5" />
+      {/* Header with fun icon */}
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[oklch(0.75_0.2_350)] to-[oklch(0.7_0.18_290)] flex items-center justify-center shadow-md">
+          <Home className="w-7 h-7 text-white" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold">Hub Settings</h2>
+          <h2 className="text-xl font-bold text-foreground">Hub Settings</h2>
           <p className="text-sm text-muted-foreground">
-            Identity and location
+            Your family command center
           </p>
         </div>
       </div>
 
       {/* Hub Name */}
-      <Field
-        label="Hub Name"
-        value={hubName}
-        editing={isEditingName}
-        setEditing={setIsEditingName}
-        onChange={setHubName}
-      />
+      <div className="space-y-3">
+        <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Sparkles className="w-4 h-4" />
+          Hub Name
+        </Label>
+        <Field
+          value={hubName}
+          editing={isEditingName}
+          setEditing={setIsEditingName}
+          onChange={setHubName}
+        />
+      </div>
 
       {/* Hub Alias */}
-      <Field
-        label="Hub Alias"
-        value={hubAlias}
-        editing={isEditingAlias}
-        setEditing={setIsEditingAlias}
-        onChange={setHubAlias}
-        placeholder="No alias set"
-      />
+      <div className="space-y-3">
+        <Label className="text-sm font-medium text-muted-foreground">Hub Alias</Label>
+        <Field
+          value={hubAlias}
+          editing={isEditingAlias}
+          setEditing={setIsEditingAlias}
+          onChange={setHubAlias}
+          placeholder="Give it a fun nickname!"
+        />
+      </div>
 
       {/* Timezone */}
-      <div className="space-y-2">
-        <Label className="text-sm text-muted-foreground">Time Zone</Label>
+      <div className="space-y-3">
+        <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+          <Globe className="w-4 h-4" />
+          Time Zone
+        </Label>
         <Select value={timezone} onValueChange={setTimezone}>
-          <SelectTrigger className="h-12">
+          <SelectTrigger className="h-14 text-base rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.15_350)] transition-colors">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl">
             {timezones.map((tz) => (
-              <SelectItem key={tz.value} value={tz.value}>
+              <SelectItem key={tz.value} value={tz.value} className="h-12 rounded-lg">
                 {tz.label}
               </SelectItem>
             ))}
@@ -140,17 +151,20 @@ export function HubSettingsSection() {
       </div>
 
       <Button
-        className="w-full h-14"
+        className="w-full h-14 text-lg font-semibold rounded-2xl bg-gradient-to-r from-[oklch(0.75_0.2_350)] to-[oklch(0.7_0.18_290)] hover:opacity-90 transition-opacity shadow-lg"
         onClick={handleSave}
         disabled={saving}
       >
         {saved ? (
-          <>
-            <Check className="w-5 h-5 mr-2" />
-            Saved
-          </>
+          <span className="flex items-center gap-2">
+            <Check className="w-6 h-6" />
+            Saved!
+          </span>
         ) : saving ? (
-          "Saving…"
+          <span className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+            Saving...
+          </span>
         ) : (
           "Save Changes"
         )}
@@ -159,18 +173,13 @@ export function HubSettingsSection() {
   )
 }
 
-/* --------------------------------------------
- * Reusable field
- * ------------------------------------------ */
 function Field({
-  label,
   value,
   editing,
   setEditing,
   onChange,
   placeholder,
 }: {
-  label: string
   value: string
   editing: boolean
   setEditing: (v: boolean) => void
@@ -178,31 +187,34 @@ function Field({
   placeholder?: string
 }) {
   return (
-    <div className="space-y-2">
-      <Label className="text-sm text-muted-foreground">{label}</Label>
-      <div className="flex gap-2">
-        {editing ? (
-          <>
-            <Input
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              className="h-12"
-              autoFocus
-            />
-            <Button size="icon" onClick={() => setEditing(false)}>
-              <Check />
-            </Button>
-          </>
-        ) : (
-          <button
-            onClick={() => setEditing(true)}
-            className="flex-1 h-12 px-4 rounded-lg bg-input border flex items-center justify-between"
+    <div className="flex gap-3">
+      {editing ? (
+        <>
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="h-14 text-base rounded-2xl border-2 focus:border-[oklch(0.75_0.15_350)]"
+            autoFocus
+          />
+          <Button 
+            size="icon" 
+            onClick={() => setEditing(false)}
+            className="h-14 w-14 rounded-2xl bg-[oklch(0.75_0.18_145)] hover:bg-[oklch(0.7_0.16_145)]"
           >
-            <span>{value || placeholder}</span>
-            <Pencil className="w-4 h-4 opacity-60" />
-          </button>
-        )}
-      </div>
+            <Check className="w-6 h-6" />
+          </Button>
+        </>
+      ) : (
+        <button
+          onClick={() => setEditing(true)}
+          className="flex-1 h-14 px-5 rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.15_350)] flex items-center justify-between transition-all group"
+        >
+          <span className={value ? "text-foreground font-medium" : "text-muted-foreground"}>
+            {value || placeholder}
+          </span>
+          <Pencil className="w-5 h-5 text-muted-foreground group-hover:text-[oklch(0.75_0.15_350)] transition-colors" />
+        </button>
+      )}
     </div>
   )
 }
