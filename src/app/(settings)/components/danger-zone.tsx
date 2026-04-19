@@ -11,7 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { AlertTriangle, Trash2, Unlink, RotateCcw, Database } from "lucide-react";
+import { AlertTriangle, Trash2, Unlink, RotateCcw, Database, ShieldAlert } from "lucide-react";
 import { soloras } from "@/lib/tauri";
 
 type DangerAction = "reset" | "unpair" | "cache" | null;
@@ -19,30 +19,33 @@ type DangerAction = "reset" | "unpair" | "cache" | null;
 const dangerActions = [
   {
     id: "cache" as const,
-    icon: <Database className="w-5 h-5" />,
+    icon: Database,
     title: "Clear Cache",
     description: "Clear all cached data and temporary files",
     buttonText: "Clear Cache",
     confirmText: "CLEAR",
     warning: "This will clear all cached data. Your settings will be preserved.",
+    color: "from-[oklch(0.78_0.18_55)] to-[oklch(0.7_0.16_55)]",
   },
   {
     id: "unpair" as const,
-    icon: <Unlink className="w-5 h-5" />,
+    icon: Unlink,
     title: "Unpair Hub",
     description: "Disconnect this hub from your account",
     buttonText: "Unpair Hub",
     confirmText: "UNPAIR",
     warning: "This will disconnect the hub from your account. You can pair it again later.",
+    color: "from-[oklch(0.75_0.16_25)] to-[oklch(0.65_0.18_25)]",
   },
   {
     id: "reset" as const,
-    icon: <RotateCcw className="w-5 h-5" />,
+    icon: RotateCcw,
     title: "Factory Reset",
     description: "Erase all data and restore factory settings",
     buttonText: "Factory Reset",
     confirmText: "RESET",
     warning: "This action cannot be undone. All data, settings, and paired devices will be permanently deleted.",
+    color: "from-[oklch(0.65_0.22_25)] to-[oklch(0.55_0.2_15)]",
   },
 ];
 
@@ -57,9 +60,8 @@ export function DangerZoneSection() {
         if (!token) {
           console.log("No device token found, redirecting to onboarding...");
         }
-        console.log("✅ Device token found:", token);
+        console.log("Device token found:", token);
       });
-
     }
     token();
   }, []);
@@ -70,7 +72,6 @@ export function DangerZoneSection() {
     if (!currentAction || confirmInput !== currentAction.confirmText) return;
     
     setIsProcessing(true);
-    // Simulate processing
     setTimeout(() => {
       setIsProcessing(false);
       setActiveAction(null);
@@ -86,90 +87,94 @@ export function DangerZoneSection() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-destructive/20 flex items-center justify-center">
-          <AlertTriangle className="w-5 h-5 text-destructive" />
+      {/* Header with warning icon */}
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[oklch(0.65_0.22_25)] to-[oklch(0.55_0.2_15)] flex items-center justify-center shadow-md">
+          <ShieldAlert className="w-7 h-7 text-white" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Danger Zone</h2>
-          <p className="text-sm text-muted-foreground">Destructive actions</p>
+          <h2 className="text-xl font-bold text-foreground">Danger Zone</h2>
+          <p className="text-sm text-muted-foreground">Be careful here!</p>
         </div>
       </div>
 
-      {/* Warning Banner */}
-      <div className="rounded-xl bg-destructive/10 border border-destructive/20 p-4">
-        <p className="text-sm text-destructive">
-          These actions can result in permanent data loss. Please proceed with caution.
+      {/* Warning Banner - Playful but serious */}
+      <div className="rounded-2xl bg-gradient-to-r from-[oklch(0.95_0.06_25)] to-[oklch(0.92_0.08_55)] border-2 border-[oklch(0.85_0.12_25)] p-4 flex items-start gap-3">
+        <AlertTriangle className="w-6 h-6 text-[oklch(0.6_0.2_25)] shrink-0 mt-0.5" />
+        <p className="text-sm text-[oklch(0.45_0.12_25)] font-medium">
+          These actions can result in permanent data loss. Please proceed with caution!
         </p>
       </div>
 
-      {/* Action Buttons */}
-      <div className="space-y-3">
-        {dangerActions.map((action) => (
-          <div
-            key={action.id}
-            className="rounded-xl bg-card border border-border p-4"
-          >
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0 text-destructive">
-                {action.icon}
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base font-medium text-foreground">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mt-0.5">
-                  {action.description}
-                </p>
-                <Button
-                  variant="destructive"
-                  className="mt-3 h-11"
-                  onClick={() => setActiveAction(action.id)}
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  {action.buttonText}
-                </Button>
+      {/* Action Cards */}
+      <div className="space-y-4">
+        {dangerActions.map((action) => {
+          const IconComponent = action.icon;
+          
+          return (
+            <div
+              key={action.id}
+              className="rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.12_25)] p-5 transition-all"
+            >
+              <div className="flex items-start gap-4">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center shrink-0`}>
+                  <IconComponent className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {action.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {action.description}
+                  </p>
+                  <Button
+                    variant="destructive"
+                    className="mt-4 h-12 px-6 rounded-xl font-semibold"
+                    onClick={() => setActiveAction(action.id)}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    {action.buttonText}
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-
-        <h1>
-          {}
-        </h1>
+          );
+        })}
       </div>
 
       {/* Confirmation Dialog */}
       <Dialog open={!!activeAction} onOpenChange={closeDialog}>
-        <DialogContent className="bg-card border-border max-w-sm">
+        <DialogContent className="bg-card border-2 border-border max-w-sm rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-destructive">
-              <AlertTriangle className="w-5 h-5" />
+            <DialogTitle className="flex items-center gap-3 text-destructive text-xl">
+              <div className="w-10 h-10 rounded-xl bg-destructive/20 flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
               {currentAction?.title}
             </DialogTitle>
-            <DialogDescription className="text-muted-foreground pt-2">
+            <DialogDescription className="text-muted-foreground pt-3 text-base">
               {currentAction?.warning}
             </DialogDescription>
           </DialogHeader>
 
           <div className="py-4">
-            <p className="text-sm text-muted-foreground mb-2">
-              Type <span className="font-mono font-bold text-foreground">{currentAction?.confirmText}</span> to confirm
+            <p className="text-sm text-muted-foreground mb-3">
+              Type <span className="font-mono font-bold text-foreground bg-muted px-2 py-1 rounded">{currentAction?.confirmText}</span> to confirm
             </p>
             <Input
               value={confirmInput}
               onChange={(e) => setConfirmInput(e.target.value.toUpperCase())}
               placeholder={`Type ${currentAction?.confirmText}`}
-              className="h-12 text-base bg-input border-border font-mono"
+              className="h-14 text-lg rounded-xl bg-input border-2 border-border font-mono"
               disabled={isProcessing}
             />
           </div>
 
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-3">
             <Button
               variant="outline"
               onClick={closeDialog}
-              className="flex-1 h-12 bg-transparent"
+              className="flex-1 h-12 rounded-xl border-2"
               disabled={isProcessing}
             >
               Cancel
@@ -177,10 +182,17 @@ export function DangerZoneSection() {
             <Button
               variant="destructive"
               onClick={handleConfirm}
-              className="flex-1 h-12"
+              className="flex-1 h-12 rounded-xl font-semibold"
               disabled={confirmInput !== currentAction?.confirmText || isProcessing}
             >
-              {isProcessing ? "Processing..." : "Confirm"}
+              {isProcessing ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  Processing...
+                </span>
+              ) : (
+                "Confirm"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
