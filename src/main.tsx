@@ -12,16 +12,16 @@ import { HubProvider } from "./providers/hub"
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-    <ApiHealthProvider intervalMs={5000}>
-      <AppBootstrap>
-        <ApiDisconnectedOverlay />
-        <HubProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-        </HubProvider>
-      </AppBootstrap>
-    </ApiHealthProvider>
+      <ApiHealthProvider intervalMs={5000}>
+        <AppBootstrap>
+          <ApiDisconnectedOverlay />
+          <HubProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </HubProvider>
+        </AppBootstrap>
+      </ApiHealthProvider>
     </ThemeProvider>
   </React.StrictMode>
 )

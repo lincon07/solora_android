@@ -1,22 +1,26 @@
-import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
+import { FormControlLabel, FormControlLabelProps, Typography } from "@mui/material"
+import React from "react"
 
-import { cn } from "@/lib/utils"
-
-function Label({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
-  return (
-    <LabelPrimitive.Root
-      data-slot="label"
-      className={cn(
-        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className
-      )}
+export const Label = React.forwardRef<HTMLLabelElement, React.ComponentProps<"label">>(
+  ({ children, ...props }, ref) => (
+    <Typography
+      component="label"
+      ref={ref}
+      variant="body2"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        fontSize: "0.875rem",
+        fontWeight: 500,
+        userSelect: "none",
+        ...props.style,
+      }}
       {...props}
-    />
+    >
+      {children}
+    </Typography>
   )
-}
+)
 
-export { Label }
+Label.displayName = "Label"
