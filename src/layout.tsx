@@ -10,17 +10,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
   const hideSidebar = location.pathname.startsWith("/onboard-wizzard")
 
-  // 🚫 Onboarding (NO sidebar) - Fun background for kids
+  // Onboarding — full background, no sidebar
   if (hideSidebar) {
     return (
-      <main className="min-h-screen w-full flex flex-col overflow-hidden bg-pattern-stars bg-pattern-rainbow">
+      <main className="min-h-screen w-full flex flex-col overflow-hidden">
         <PairingProvider>{children}</PairingProvider>
         <Toaster />
       </main>
     )
   }
 
-  // ✅ App layout
+  // App layout — nature bg shows through, panels use glass
   return (
     <SidebarProvider
       style={
@@ -30,11 +30,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
     >
-      <div className="flex min-h-screen w-full overflow-hidden p-10">
+      <div className="flex min-h-screen w-full overflow-hidden p-6 gap-4">
         <AppSidebar />
 
-        {/* ✅ Layout owns size + overflow */}
-        <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Main content area — glass panel over the nature background */}
+        <main className="flex-1 flex flex-col overflow-hidden rounded-3xl glass shadow-xl">
           <PairingProvider>{children}</PairingProvider>
           <Toaster />
         </main>

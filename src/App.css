@@ -229,56 +229,55 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     letter-spacing: var(--tracking-normal);
+    /* Real nature cartoon background image – light mode */
+    background-image: url('/bg-nature.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  .dark body {
+    background-image: url('/bg-night.jpg');
   }
 }
 
-/* Fun background patterns */
-.bg-pattern-dots {
-  background-image: radial-gradient(circle, oklch(0.7500 0.1200 290 / 0.15) 2px, transparent 2px);
-  background-size: 24px 24px;
+/* Frosted glass card — use on all cards/panels */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.dark .glass {
+  background: rgba(30, 20, 60, 0.55);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.bg-pattern-stars {
-  background-image: 
-    radial-gradient(circle at 20% 30%, oklch(0.9000 0.1600 95 / 0.3) 2px, transparent 2px),
-    radial-gradient(circle at 60% 70%, oklch(0.7500 0.2000 350 / 0.25) 3px, transparent 3px),
-    radial-gradient(circle at 80% 20%, oklch(0.7500 0.1400 185 / 0.3) 2px, transparent 2px),
-    radial-gradient(circle at 40% 80%, oklch(0.7500 0.1600 290 / 0.25) 2px, transparent 2px);
-  background-size: 100px 100px;
+/* Stronger frosted glass for headers/sidebars */
+.glass-heavy {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+.dark .glass-heavy {
+  background: rgba(25, 15, 55, 0.72);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
-.bg-pattern-clouds {
-  background-image: 
-    radial-gradient(ellipse 80px 50px at 30% 40%, oklch(1 0 0 / 0.4) 0%, transparent 70%),
-    radial-gradient(ellipse 60px 35px at 70% 60%, oklch(1 0 0 / 0.3) 0%, transparent 70%),
-    radial-gradient(ellipse 100px 60px at 50% 80%, oklch(1 0 0 / 0.25) 0%, transparent 70%);
-}
-
-.bg-pattern-rainbow {
-  background: linear-gradient(
-    135deg,
-    oklch(0.9000 0.1000 350 / 0.1) 0%,
-    oklch(0.9200 0.1000 55 / 0.1) 20%,
-    oklch(0.9400 0.1000 95 / 0.1) 40%,
-    oklch(0.9000 0.0800 145 / 0.1) 60%,
-    oklch(0.9000 0.0800 220 / 0.1) 80%,
-    oklch(0.9000 0.1000 290 / 0.1) 100%
-  );
-}
-
-.dark .bg-pattern-dots {
-  background-image: radial-gradient(circle, oklch(0.7500 0.1200 290 / 0.2) 2px, transparent 2px);
-}
-
-.dark .bg-pattern-stars {
-  background-image: 
-    radial-gradient(circle at 20% 30%, oklch(0.9500 0.1600 95 / 0.5) 2px, transparent 2px),
-    radial-gradient(circle at 60% 70%, oklch(0.8000 0.2000 350 / 0.4) 3px, transparent 3px),
-    radial-gradient(circle at 80% 20%, oklch(0.8000 0.1400 185 / 0.5) 2px, transparent 2px),
-    radial-gradient(circle at 40% 80%, oklch(0.8000 0.1600 290 / 0.4) 2px, transparent 2px);
-}
+/* Legacy pattern helpers kept for compatibility */
+.bg-pattern-dots { background: transparent; }
+.bg-pattern-stars { background: transparent; }
+.bg-pattern-clouds { background: transparent; }
+.bg-pattern-rainbow { background: transparent; }
+.dark .bg-pattern-dots { background: transparent; }
+.dark .bg-pattern-stars { background: transparent; }
 
 /* Fun bouncy animations */
 @keyframes bounce-gentle {

@@ -136,7 +136,7 @@ export function MembersSection() {
             const Icon = ui.icon
 
             return (
-              <div key={member.id} className="rounded-2xl bg-card border border-border p-4 shadow-sm card-interactive">
+              <div key={member.id} className="rounded-2xl glass p-4 shadow-sm card-interactive">
                 <div className="flex items-center gap-4">
                   {/* Colorful avatar */}
                   <Avatar 

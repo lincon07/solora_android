@@ -18,13 +18,13 @@ const DAYS = ["S", "M", "T", "W", "T", "F", "S"]
 interface MiniCalendarProps {
   selectedDate: Date
   onDateSelect: (date: Date) => void
-  events?: HomeEvent[] // ✅ optional
+  events?: HomeEvent[]
 }
 
 export function MiniCalendar({
   selectedDate,
   onDateSelect,
-  events = [], // ✅ DEFAULT
+  events = [],
 }: MiniCalendarProps) {
   const [viewDate, setViewDate] = useState(new Date(selectedDate))
   const today = new Date()
@@ -42,10 +42,7 @@ export function MiniCalendar({
   const eventDaySet = useMemo(() => {
     const set = new Set<number>()
     for (const e of events) {
-      if (
-        e.start.getFullYear() === year &&
-        e.start.getMonth() === month
-      ) {
+      if (e.start.getFullYear() === year && e.start.getMonth() === month) {
         set.add(e.start.getDate())
       }
     }
@@ -63,62 +60,71 @@ export function MiniCalendar({
   }
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-4 w-[200px]">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold">
-          {viewDate.toLocaleDateString("en-US", {
-            month: "short",
-            year: "numeric",
-          })}
+    <div className="glass rounded-2xl p-4 shadow-lg flex flex-col h-full">
+      {/* Month navigation */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-base font-bold text-foreground">
+          {viewDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
         </h3>
         <div className="flex gap-1">
           <Button
             variant="ghost"
             size="icon"
-            className="w-6 h-6"
+            className="w-7 h-7 rounded-xl hover:bg-white/50"
             onClick={() => setViewDate(new Date(year, month - 1, 1))}
           >
-            <ChevronLeft className="w-3 h-3" />
+            <ChevronLeft className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="w-6 h-6"
+            className="w-7 h-7 rounded-xl hover:bg-white/50"
             onClick={() => setViewDate(new Date(year, month + 1, 1))}
           >
-            <ChevronRight className="w-3 h-3" />
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
-        {DAYS.map((d) => (
-          <div key={d} className="text-xs text-center text-muted-foreground">
+      {/* Day headers */}
+      <div className="grid grid-cols-7 gap-1 mb-1">
+        {DAYS.map((d, i) => (
+          <div key={i} className="text-xs text-center font-semibold text-muted-foreground py-1">
             {d}
           </div>
         ))}
+      </div>
 
+      {/* Day cells */}
+      <div className="grid grid-cols-7 gap-1 flex-1">
         {days.map((day, i) => {
           const date = day ? new Date(year, month, day) : null
           const selected = date && isSameDay(date, selectedDate)
           const todayMatch = date && isSameDay(date, today)
+          const hasEvent = day && eventDaySet.has(day)
 
           return (
             <button
               key={i}
               disabled={!day}
               onClick={() => handleDayClick(day)}
-              className={`relative py-1.5 rounded-md text-xs ${
+              className={[
+                "relative flex flex-col items-center justify-center rounded-xl text-xs font-medium transition-all py-1.5",
                 selected
-                  ? "bg-foreground text-background"
+                  ? "bg-primary text-primary-foreground shadow-md scale-110"
                   : todayMatch
-                    ? "ring-1 ring-foreground"
-                    : "hover:bg-secondary"
-              }`}
+                  ? "ring-2 ring-primary/60 bg-white/40 text-foreground"
+                  : day
+                  ? "hover:bg-white/50 text-foreground"
+                  : "opacity-0 pointer-events-none",
+              ].join(" ")}
             >
               {day}
-              {day && eventDaySet.has(day) && !selected && (
-                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-foreground/50 rounded-full" />
+              {hasEvent && !selected && (
+                <span
+                  className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
+                  style={{ backgroundColor: "var(--primary)" }}
+                />
               )}
             </button>
           )

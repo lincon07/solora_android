@@ -36,9 +36,7 @@ export function LiveClock() {
   }
 
   return (
-    <div className="bg-card border-2 border-border rounded-3xl px-5 py-4 shadow-lg card-interactive overflow-hidden relative">
-      {/* Decorative background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none" />
+    <div className="glass rounded-3xl px-5 py-4 shadow-lg card-interactive overflow-hidden relative">
       
       <div className="flex items-center gap-4 relative z-10">
         {/* Animated mascot instead of static icon */}

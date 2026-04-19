@@ -83,9 +83,7 @@ export function WeatherWidget() {
   const extraIcon = weatherIcons[weather.type]
 
   return (
-    <div className="flex items-center gap-5 bg-card border-2 border-border rounded-3xl px-5 py-4 shadow-lg card-interactive overflow-hidden relative">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-pattern-clouds opacity-30 pointer-events-none" />
+    <div className="flex items-center gap-5 glass rounded-3xl px-5 py-4 shadow-lg card-interactive overflow-hidden relative">
       
       {/* Weather mascot with colorful background */}
       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${config.bgClass} shadow-md relative z-10`}>

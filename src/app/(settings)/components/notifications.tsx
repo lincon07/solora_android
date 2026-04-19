@@ -104,7 +104,7 @@ export function NotificationsSection() {
       </div>
 
       {/* Sound Toggle - Fun card */}
-      <div className="rounded-2xl bg-gradient-to-br from-card to-muted/30 border-2 border-border overflow-hidden">
+      <div className="rounded-2xl glass overflow-hidden">
         <div className="p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

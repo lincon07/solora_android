@@ -12,7 +12,7 @@ import { QuickStats } from "./components/quick-staats"
 import { MiniCalendar } from "./components/mini-calendar"
 import { UpcomingEvents } from "./components/upcomming-events"
 import { AvatarGroup } from "@/components/ui/avatar"
-import { Mascot, FloatingShapes } from "@/components/ui/mascot"
+import { Mascot } from "@/components/ui/mascot"
 
 // Get time-appropriate greeting with fun messages
 function getGreeting(): { greeting: string; emoji: string } {
@@ -54,8 +54,7 @@ export function HomePage() {
   // -----------------------------
   if (hub.loading || home.loading) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-dots relative">
-        <FloatingShapes className="opacity-30" />
+      <div className="h-full flex flex-col items-center justify-center gap-6 relative">
         <Mascot type="sunny" size="xl" mood="excited" />
         <p className="text-xl text-foreground font-bold">Loading your family hub...</p>
         <div className="flex gap-2">
@@ -69,8 +68,7 @@ export function HomePage() {
 
   if (!hub.hub) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-stars relative">
-        <FloatingShapes className="opacity-30" />
+      <div className="h-full flex flex-col items-center justify-center gap-6 relative">
         <Mascot type="house" size="xl" mood="thinking" />
         <p className="text-xl text-foreground font-bold">Not paired yet</p>
         <p className="text-muted-foreground">Let&apos;s connect your smart home!</p>
@@ -80,8 +78,7 @@ export function HomePage() {
 
   if (hub.error || home.error) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-6 bg-pattern-dots relative">
-        <FloatingShapes className="opacity-30" />
+      <div className="h-full flex flex-col items-center justify-center gap-6 relative">
         <Mascot type="cloud" size="xl" mood="sleepy" />
         <p className="text-xl text-destructive font-bold">Oops! Something went wrong</p>
         <p className="text-muted-foreground">Don&apos;t worry, we&apos;ll fix it!</p>
@@ -93,21 +90,17 @@ export function HomePage() {
   // Main layout
   // -----------------------------
   return (
-    <div className="h-screen flex flex-col gap-5 p-4 overflow-hidden bg-pattern-dots relative">
-      {/* Floating decorative shapes */}
-      <FloatingShapes className="opacity-20" />
+    <div className="h-full flex flex-col gap-4 p-5 overflow-hidden relative">
 
-      {/* Welcome header with mascot */}
-      <div className="flex items-center justify-between relative z-10">
+      {/* Welcome header — frosted glass pill */}
+      <div className="flex items-center justify-between glass rounded-2xl px-5 py-3 shadow-md">
         <div className="flex items-center gap-4">
           <Mascot type={mascotType} size="md" mood="happy" />
           <div className="flex flex-col gap-0.5">
-            <h1 className="text-3xl font-extrabold text-foreground">
+            <h1 className="text-2xl font-extrabold text-foreground">
               {greeting}, <span className="text-rainbow">Family!</span>
             </h1>
-            <p className="text-sm text-muted-foreground font-medium">
-              {emoji}
-            </p>
+            <p className="text-sm text-muted-foreground font-medium">{emoji}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -116,24 +109,21 @@ export function HomePage() {
       </div>
 
       {/* Clock and weather row */}
-      <div className="flex flex-wrap items-center gap-4 relative z-10">
+      <div className="flex flex-wrap items-center gap-4">
         <LiveClock />
         <WeatherWidget />
       </div>
 
       {/* Quick stats */}
-      <div className="relative z-10">
-        <QuickStats {...home.stats} />
-      </div>
+      <QuickStats {...home.stats} />
 
       {/* Calendar and events grid */}
-      <div className="grid grid-cols-1 md:grid-cols-[340px_1fr] gap-4 flex-1 min-h-0 relative z-10">
+      <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4 flex-1 min-h-0">
         <MiniCalendar
           selectedDate={selectedDate}
           onDateSelect={setSelectedDate}
           events={home.events}
         />
-
         <UpcomingEvents
           selectedDate={selectedDate}
           events={home.events}
