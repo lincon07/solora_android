@@ -1,92 +1,128 @@
-import * as React from "react"
+import { Card as MuiCard, CardProps as MuiCardProps, Box, Typography, useTheme } from "@mui/material"
+import React from "react"
 
-import { cn } from "@/lib/utils"
-
-function Card({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card"
-      className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
-        className
-      )}
+export const Card = React.forwardRef<HTMLDivElement, MuiCardProps & React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <MuiCard
+      ref={ref}
       {...props}
-    />
+      sx={{
+        borderRadius: "12px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </MuiCard>
   )
-}
+)
+Card.displayName = "Card"
 
-function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-header"
-      className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
-        className
-      )}
+export const CardHeader = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Box
+      ref={ref}
       {...props}
-    />
+      sx={{
+        padding: "24px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        gap: "8px",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Box>
   )
-}
+)
+CardHeader.displayName = "CardHeader"
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+export const CardTitle = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Typography
+      ref={ref}
+      variant="h6"
       {...props}
-    />
+      sx={{
+        fontWeight: 600,
+        fontSize: "1rem",
+        lineHeight: 1.2,
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Typography>
   )
-}
+)
+CardTitle.displayName = "CardTitle"
 
-function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+export const CardDescription = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Typography
+      ref={ref}
+      variant="body2"
       {...props}
-    />
+      sx={{
+        fontSize: "0.875rem",
+        color: "text.secondary",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Typography>
   )
-}
+)
+CardDescription.displayName = "CardDescription"
 
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
+export const CardAction = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Box
+      ref={ref}
       {...props}
-    />
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Box>
   )
-}
+)
+CardAction.displayName = "CardAction"
 
-function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-6", className)}
+export const CardContent = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Box
+      ref={ref}
       {...props}
-    />
+      sx={{
+        padding: "16px 24px",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Box>
   )
-}
+)
+CardContent.displayName = "CardContent"
 
-function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-footer"
-      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+export const CardFooter = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+  ({ children, ...props }, ref) => (
+    <Box
+      ref={ref}
       {...props}
-    />
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        padding: "16px 24px",
+        gap: "8px",
+        ...props.sx,
+      }}
+    >
+      {children}
+    </Box>
   )
-}
-
-export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-  CardDescription,
-  CardContent,
-}
+)
+CardFooter.displayName = "CardFooter"

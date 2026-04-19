@@ -1,73 +1,172 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useMemo, useState } from "react"
+import { ThemeProvider as MuiThemeProvider, createTheme, CssBaseline } from "@mui/material"
+import { PaletteMode } from "@mui/material"
 
-type Theme = "dark" | "light" | "system"
-
-type ThemeProviderProps = {
-  children: React.ReactNode
-  defaultTheme?: Theme
-  storageKey?: string
+type ThemeContextType = {
+  mode: PaletteMode
+  toggleTheme: () => void
 }
 
-type ThemeProviderState = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-}
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-const initialState: ThemeProviderState = {
-  theme: "system",
-  setTheme: () => null,
-}
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [mode, setMode] = useState<PaletteMode>(() => {
+    const savedTheme = localStorage.getItem("mui-theme") as PaletteMode
+    return savedTheme || "light"
+  })
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
-
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "vite-ui-theme",
-  ...props
-}: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  )
-
-  useEffect(() => {
-    const root = window.document.documentElement
-
-    root.classList.remove("light", "dark")
-
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light"
-
-      root.classList.add(systemTheme)
-      return
-    }
-
-    root.classList.add(theme)
-  }, [theme])
-
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
-      setTheme(theme)
-    },
+  const toggleTheme = () => {
+    setMode((prevMode) => {
+      const newMode = prevMode === "light" ? "dark" : "light"
+      localStorage.setItem("mui-theme", newMode)
+      return newMode
+    })
   }
 
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+          ...(mode === "light"
+            ? {
+                // Light mode
+                primary: {
+                  main: "#424242",
+                  light: "#757575",
+                  dark: "#212121",
+                },
+                secondary: {
+                  main: "#757575",
+                  light: "#bdbdbd",
+                  dark: "#424242",
+                },
+                background: {
+                  default: "#fafafa",
+                  paper: "#ffffff",
+                },
+                text: {
+                  primary: "#212121",
+                  secondary: "#757575",
+                },
+                divider: "#e0e0e0",
+              }
+            : {
+                // Dark mode
+                primary: {
+                  main: "#e0e0e0",
+                  light: "#ffffff",
+                  dark: "#9e9e9e",
+                },
+                secondary: {
+                  main: "#9e9e9e",
+                  light: "#f5f5f5",
+                  dark: "#616161",
+                },
+                background: {
+                  default: "#121212",
+                  paper: "#1e1e1e",
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#b0b0b0",
+                },
+                divider: "#424242",
+              }),
+        },
+        typography: {
+          fontFamily:
+            '"Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+          h1: { fontSize: "2rem", fontWeight: 600 },
+          h2: { fontSize: "1.5rem", fontWeight: 600 },
+          h3: { fontSize: "1.25rem", fontWeight: 600 },
+          h4: { fontSize: "1rem", fontWeight: 600 },
+          h5: { fontSize: "0.875rem", fontWeight: 600 },
+          h6: { fontSize: "0.75rem", fontWeight: 600 },
+          body1: { fontSize: "1rem", fontWeight: 400 },
+          body2: { fontSize: "0.875rem", fontWeight: 400 },
+          button: { textTransform: "none" as const },
+        },
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: "8px",
+                textTransform: "none",
+                fontWeight: 500,
+                padding: "8px 16px",
+              },
+              contained: {
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                },
+              },
+            },
+          },
+          MuiCard: {
+            styleOverrides: {
+              root: {
+                borderRadius: "12px",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
+              },
+            },
+          },
+          MuiDialog: {
+            styleOverrides: {
+              paper: {
+                borderRadius: "12px",
+              },
+            },
+          },
+          MuiTextField: {
+            defaultProps: {
+              variant: "outlined" as const,
+            },
+            styleOverrides: {
+              root: {
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                },
+              },
+            },
+          },
+          MuiSelect: {
+            styleOverrides: {
+              root: {
+                borderRadius: "8px",
+              },
+            },
+          },
+          MuiSwitch: {
+            styleOverrides: {
+              root: {
+                padding: "8px",
+              },
+            },
+          },
+        },
+        shape: {
+          borderRadius: 8,
+        },
+      }),
+    [mode]
+  )
+
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
+    <ThemeContext.Provider value={{ mode, toggleTheme }}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </MuiThemeProvider>
+    </ThemeContext.Provider>
   )
 }
 
-export const useTheme = () => {
-  const context = useContext(ThemeProviderContext)
-
-  if (context === undefined)
+export function useTheme() {
+  const context = useContext(ThemeContext)
+  if (context === undefined) {
     throw new Error("useTheme must be used within a ThemeProvider")
-
+  }
   return context
 }
