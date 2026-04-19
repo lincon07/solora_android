@@ -114,7 +114,7 @@ export function DangerZoneSection() {
           return (
             <div
               key={action.id}
-              className="rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.12_25)] p-5 transition-all"
+              className="rounded-2xl glass hover:bg-white/60 p-5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${action.color} flex items-center justify-center shrink-0`}>

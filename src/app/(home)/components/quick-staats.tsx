@@ -50,7 +50,7 @@ export function QuickStats(props: {
       {stats.map((stat, index) => (
         <div 
           key={stat.label} 
-          className="bg-card border-2 border-border rounded-3xl p-5 flex flex-col shadow-lg card-interactive overflow-hidden relative group"
+          className="glass rounded-3xl p-5 flex flex-col shadow-lg card-interactive overflow-hidden relative group"
         >
           {/* Decorative background gradient */}
           <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-30 group-hover:opacity-50 transition-opacity`} />

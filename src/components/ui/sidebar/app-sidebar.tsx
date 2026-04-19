@@ -36,7 +36,7 @@ export function AppSidebar() {
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <Sidebar className="w-[80px] border-r-0 bg-sidebar rounded-r-3xl shadow-xl">
+    <Sidebar className="w-[80px] border-r-0 rounded-3xl shadow-2xl glass-heavy overflow-hidden">
       {/* Fun logo area with mascot-style icon */}
       <div className="flex items-center justify-center py-6">
         <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center shadow-lg animate-bounce-gentle relative">

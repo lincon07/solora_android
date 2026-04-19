@@ -148,7 +148,7 @@ export function DisplaySection() {
             </div>
 
             {/* Auto-Brightness Toggle - Fun card */}
-            <div className="rounded-2xl bg-gradient-to-br from-card to-muted/30 border-2 border-border p-5">
+            <div className="rounded-2xl glass p-5">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[oklch(0.75_0.14_185)] to-[oklch(0.65_0.12_145)] flex items-center justify-center">

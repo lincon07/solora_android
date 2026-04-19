@@ -81,7 +81,7 @@ export function HubSettingsSection() {
 
   if (!hubId) {
     return (
-      <div className="rounded-2xl bg-card border-2 border-dashed border-muted p-6 text-center">
+      <div className="rounded-2xl glass p-6 text-center border border-dashed border-muted">
         <Home className="w-10 h-10 mx-auto mb-3 text-muted-foreground opacity-50" />
         <p className="text-muted-foreground font-medium">Hub not paired yet</p>
         <p className="text-sm text-muted-foreground/70 mt-1">Connect your hub to manage settings</p>
@@ -207,7 +207,7 @@ function Field({
       ) : (
         <button
           onClick={() => setEditing(true)}
-          className="flex-1 h-14 px-5 rounded-2xl bg-card border-2 border-border hover:border-[oklch(0.75_0.15_350)] flex items-center justify-between transition-all group"
+          className="flex-1 h-14 px-5 rounded-2xl glass hover:bg-white/60 border border-border/50 hover:border-[oklch(0.75_0.15_350)] flex items-center justify-between transition-all group"
         >
           <span className={value ? "text-foreground font-medium" : "text-muted-foreground"}>
             {value || placeholder}
