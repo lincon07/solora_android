@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     )
   }
 
-  // App layout — nature bg shows through, panels use glass
+  // App layout — simple clean design
   return (
     <SidebarProvider
       style={
@@ -30,11 +30,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
     >
-      <div className="flex min-h-screen w-full overflow-hidden p-6 gap-4">
+      <div className="flex min-h-screen w-full overflow-hidden">
         <AppSidebar />
 
-        {/* Main content area — glass panel over the nature background */}
-        <main className="flex-1 flex flex-col overflow-hidden rounded-3xl glass shadow-xl">
+        {/* Main content area — clean minimal design */}
+        <main className="flex-1 flex flex-col overflow-hidden">
           <PairingProvider>{children}</PairingProvider>
           <Toaster />
         </main>
